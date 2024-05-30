@@ -29,13 +29,16 @@ class pr():
 #     tasks = []
 #     for i in range(len(top.split("\n"))):
 #         if i == 0:
+#             j = top.split("\n")[0].split()
+#             top_info += [j[2], j[4], j[5]]
 
 
 a = os.popen("ps", mode='r', buffering=-1)
 b = ""
 prs = []
 for i in a.readlines()[1:]:
-    pd, ty, tm, cd = i.split()
+    print(i.split())
+    pd, ty, tm, cd, *rest = i.split()
     prs += [pr(pid=pd, tty = ty, time = tm, cmd = cd)]
 pd, ty, tm, cd = None, None, None, None
         
@@ -51,7 +54,19 @@ def hello_world():
     for i in top_output.split("\n"):
         b += f"{i}<br/>"
     # return f"<p>Go to /hello/name?key=abc</p>"
-    return f"<p>{b}<p>"
+    return f"<p>{b}<p/>"
+
+@app.route("/table")
+def ret_table():
+    a = os.popen("ps", mode='r', buffering=-1)
+    b = ""
+    prs = []
+    for i in a.readlines()[1:]:
+        print(i.split())
+        pd, ty, tm, cd, *rest = i.split()
+        prs += [pr(pid=pd, tty = ty, time = tm, cmd = cd)]
+    pd, ty, tm, cd = None, None, None, None
+    return render_template('table.html', prs=prs)
 
 @app.route('/hello/')
 @app.route('/hello/<name>/')
