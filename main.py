@@ -81,6 +81,16 @@ def hello_world():
     # return f"<p>Go to /hello/name?key=abc</p>"
     return f"<p>{b}<p/>"
 
+@app.route("/table_css")
+def ret_table_css():
+    top_parse = parse_top(read_top_output())
+    return render_template('table.html', prs=top_parse[5])
+
+@app.route('/index/')
+def hello():
+    top_parse = parse_top(read_top_output())
+    return render_template('index.html', prs=top_parse[5])
+
 @app.route("/table")
 def ret_table():
     return render_template('table.html', prs=read_htop_output())

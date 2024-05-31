@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link href="style.css" rel="stylesheet" />
+    <title>Server</title>
+    <style>
+        p.upd {
+            text-align: center;
+            font-size: 24px;
+            margin: 0;
+            vertical-align: middle;
+        }
+        
+        div.upd {
+            vertical-align: middle;
+            width: 500px;
+            border: 1px solid black;
+            background-color: rgba(0, 0, 0, 0.3);
+            height: 52px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <link href="style.css" rel="stylesheet" />
+    <table id="data" class="table table-striped">
+        <thead>
+            <tr>
+                <th>PID</th>
+                <th>USER</th>
+                <th>PR</th>
+                <th>NI</th>
+                <th>VIRT</th>
+                <th>RES</th>
+                <th>SHR</th>
+                <th>S</th>
+                <th>CPU</th>
+                <th>MEM</th>
+                <th>TIME</th>
+                <th>COMMAND</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pr_top in prs %}
+            <tr>
+                <td>{{ pr_top.pid }}</td>
+                <td>{{ pr_top.user }}</td>
+                <td>{{ pr_top.pr }}</td>
+                <td>{{ pr_top.ni }}</td>
+                <td>{{ pr_top.virt }}</td>
+                <td>{{ pr_top.res }}</td>
+                <td>{{ pr_top.shr }}</td>
+                <td>{{ pr_top.s }}</td>
+                <td>{{ pr_top.cpu }}</td>
+                <td>{{ pr_top.mem }}</td>
+                <td>{{ pr_top.time }}</td>
+                <td>{{ pr_top.command }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="upd">
+        <p class="upd">Update</p>
+    </div>
+    <script>
+        function updateTable() {
+            $.get("../../table", function(data) {
+                $('table').html(data);
+            });
+        }
+
+        $("div.upd").on("click", function() {
+            updateTable();
+        });
+
+        setInterval(updateTable, 2000);
+    </script>
+</body>
