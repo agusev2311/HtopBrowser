@@ -46,7 +46,7 @@ def parse_top(top):
     for i in range(len(top.split("\n"))):
         j = top.split("\n")[i].split()
         if i == 0:
-            top_info += [j[2], j[4], j[5], j[10], j[11], j[12]]
+            top_info += [j[2], j[4], j[5], j[9], j[10], j[11]]
         elif i == 1:
             tasks_count += [j[1], j[3], j[5], j[7], j[9]]
         elif i == 2:
@@ -66,7 +66,7 @@ def parse_top(top):
     return [top_info, tasks_count, cpu, mem, swap, tasks]
 
 print(read_top_output())
-
+                     
 app = Flask(__name__)
 
 @app.route("/")
@@ -80,23 +80,12 @@ def hello_world():
 
 @app.route("/table")
 def ret_table():
-    # a = os.popen("ps", mode='r', buffering=-1)
-    # b = ""
-    # prs = []
-    # for i in a.readlines()[1:]:
-    #     print(i.split())
-    #     pd, ty, tm, cd, *rest = i.split()
-    #     prs += [pr(pid=pd, tty = ty, time = tm, cmd = cd)]
-    # pd, ty, tm, cd = None, None, None, None
-    top_output = read_top_output()
-    top_output2 = top_output.replace("\n", "<br>")
-    return render_template('table.html', prs=top_output2)
+    top_parse = parse_top(read_top_output())
+    return render_template('table.html', prs=top_parse[5])
 
 @app.route('/hello/')
-def hello(name=None):
-    top_output = read_top_output()
-    top_output2 = top_output.replace("\n", "<br>")
-    # searchword = request.args.get('key', '')
-    return render_template('hello.html', prs=top_output2) # person=name, key=searchword,
+def hello():
+    top_parse = parse_top(read_top_output())
+    return render_template('hello.html', prs=top_parse[5])
 
 parse_top(read_top_output())
