@@ -14,6 +14,9 @@ def read_top_output():
         output = stdout.decode('utf-8')
         return output
 
+def read_htop_output():
+    return os.popen("echo q | htop | aha --black --line-fix").read()
+
 class pr():
     def __init__(self, pid, tty, time, cmd):
         self.pid = pid
@@ -80,12 +83,10 @@ def hello_world():
 
 @app.route("/table")
 def ret_table():
-    top_parse = parse_top(read_top_output())
-    return render_template('table.html', prs=top_parse[5])
+    return render_template('table.html', prs=read_htop_output())
 
 @app.route('/hello/')
 def hello():
-    top_parse = parse_top(read_top_output())
-    return render_template('hello.html', prs=top_parse[5])
+    return render_template('hello.html', prs=read_htop_output())
 
 parse_top(read_top_output())

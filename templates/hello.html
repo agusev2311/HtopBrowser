@@ -5,47 +5,14 @@
   <title>Server's data</title>
 </head>
 <body>
-  <table id="data" class="table table-striped">
-    <thead>
-        <tr>
-          <th>PID</th>
-          <th>USER</th>
-          <th>PR</th>
-          <th>NI</th>
-          <th>VIRT</th>
-          <th>RES</th>
-          <th>SHR</th>
-          <th>S</th>
-          <th>CPU</th>
-          <th>MEM</th>
-          <th>TIME</th>
-          <th>COMMAND</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for pr_top in prs %}
-          <tr>
-            <td>{{ pr_top.pid }}</td>
-            <td>{{ pr_top.user }}</td>
-            <td>{{ pr_top.pr }}</td>
-            <td>{{ pr_top.ni }}</td>
-            <td>{{ pr_top.virt }}</td>
-            <td>{{ pr_top.res }}</td>
-            <td>{{ pr_top.shr }}</td>
-            <td>{{ pr_top.s }}</td>
-            <td>{{ pr_top.cpu }}</td>
-            <td>{{ pr_top.mem }}</td>
-            <td>{{ pr_top.time }}</td>
-            <td>{{ pr_top.command }}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-  </table>
+  <p class="htop">
+    {{ prs|safe }}
+  </p>
   <p class="upd">Update</p>
   <script>
     function updateTable() {
       $.get( "../../table", function( data ) {
-        $('table').html(data);
+        $('p.htop').html(data);
       });
     }
 
