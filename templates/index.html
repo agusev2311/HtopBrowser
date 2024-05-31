@@ -29,6 +29,9 @@
             justify-content: center;
             align-items: center;
             align-content: center;
+            align-self: center;
+            margin-left: auto;
+            margin-right: auto;
         }
         
         div.upd:hover {
@@ -43,6 +46,7 @@
             color: white;
             border-color: rgba(255, 255, 255, 0.7);
             border: 1px solid rgba(255, 255, 255, 0.7);
+            padding: 1;
         }
         
         th {
@@ -54,13 +58,23 @@
         
         table {
             width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        @media only screen and (min-width: 992px) {
+            table {
+                width: 50%;
+            }
         }
     </style>
 </head>
 
 <body>
     <link href="style.css" rel="stylesheet" />
-    <table id="data" class="table table-striped">
+    <table class="data">
         <thead>
             <tr>
                 <th>PID</th>
@@ -102,8 +116,8 @@
     </div>
     <script>
         function updateTable() {
-            $.get("../../table", function(data) {
-                $('table').html(data);
+            $.get("../../table_css", function(data) {
+                $('table.data').html(data);
             });
         }
 
