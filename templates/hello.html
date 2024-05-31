@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <title>Server's data</title>
+</head>
+<body>
+  <!-- Hello, {{person}}. Key = {{key}} -->
+
+  <!-- <table id="data" class="table table-striped">
+      <thead>
+          <tr>
+            <th>PID</th>
+            <th>TTY</th>
+            <th>TIME</th>
+            <th>CMD</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for pr in prs %}
+            <tr>
+              <td>{{ pr.pid }}</td>
+              <td>{{ pr.tty }}</td>
+              <td>{{ pr.time }}</td>
+              <td>{{ pr.cmd }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+  </table> -->
+  <p class="top">
+    {{ prs|safe }}
+  </p>
+  <p class="upd">Update</p>
+  <script>
+    function updateTable() {
+      $.get( "../../table", function( data ) {
+        $('p.top').html(data);
+      });
+    }
+
+    $( "p.upd" ).on( "click", function() {
+      updateTable();
+    } );
+
+    setInterval(updateTable, 10000);
+  </script>
+</body>
