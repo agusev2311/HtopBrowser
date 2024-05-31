@@ -68,9 +68,9 @@ def ret_table():
     pd, ty, tm, cd = None, None, None, None
     return render_template('table.html', prs=prs)
 
-@app.route('/hello/')
-@app.route('/hello/<name>/')
+@app.route('/index/')
+@app.route('/index/<name>/')
 def hello(name=None):
     
     searchword = request.args.get('key', '')
-    return render_template('hello.html', person=name, key=searchword, prs=prs)
+    return render_template('index.html', person=name, key=searchword, prs=prs)

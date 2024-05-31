@@ -1,0 +1,12 @@
+p.button {
+    color: red;
+    width: min-content;
+    border: 1px solid black;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+head {
+    display: block;
+}
+
+title {}
