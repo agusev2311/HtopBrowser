@@ -1,4 +1,4 @@
-p.button {
+p.upd {
     color: red;
     width: min-content;
     border: 1px solid black;
@@ -10,3 +10,5 @@ head {
 }
 
 title {}
+
+th {}

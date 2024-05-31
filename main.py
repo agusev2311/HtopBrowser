@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 import os
 import subprocess
 # flask --app main run
+# flask --app main run --debug --host 0.0.0.0
 
 def read_top_output():
     process = subprocess.Popen(['top', '-b', '-n', '1'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -20,31 +21,52 @@ class pr():
         self.time = time
         self.cmd = cmd
 
-# def parse_top(top):
-#     top_info = []
-#     tasks_count = []
-#     cpu = []
-#     mem = []
-#     swap = []
-#     tasks = []
-#     for i in range(len(top.split("\n"))):
-#         if i == 0:
-#             j = top.split("\n")[0].split()
-#             top_info += [j[2], j[4], j[5]]
+class pr_top():
+    def __init__(self, pid, user, pr, ni, virt, res, shr, s, cpu, mem, time, command):
+        self.pid = pid
+        self.user = user
+        self.pr = pr
+        self.ni = ni
+        self.virt = virt
+        self.res = res
+        self.shr = shr
+        self.s = s
+        self.cpu = cpu
+        self.mem = mem
+        self.time = time
+        self.command = command
 
+def parse_top(top):
+    top_info = []
+    tasks_count = []
+    cpu = []
+    mem = []
+    swap = []
+    tasks = []
+    for i in range(len(top.split("\n"))):
+        j = top.split("\n")[i].split()
+        if i == 0:
+            top_info += [j[2], j[4], j[5], j[9], j[10], j[11]]
+        elif i == 1:
+            tasks_count += [j[1], j[3], j[5], j[7], j[9]]
+        elif i == 2:
+            cpu += [j[1], j[3], j[5], j[7], j[9], j[11], j[13], j[15]]
+        elif i == 3:
+            mem += [j[3], j[5], j[7], j[9]]
+        elif i == 4:
+            swap += [j[2], j[4], j[6], j[8]]
+        elif i in [5, 6, len(top.split("\n")) - 1]:
+            pass
+        else:
+            task_top = pr_top(j[0], j[1], j[2], j[3], 
+                              j[4], j[5], j[6], j[7], 
+                              j[8], j[9], j[10], j[11])
+            tasks += [task_top]
+    task_top = None
+    return [top_info, tasks_count, cpu, mem, swap, tasks]
 
-a = os.popen("ps", mode='r', buffering=-1)
-b = ""
-prs = []
-for i in a.readlines()[1:]:
-    print(i.split())
-    pd, ty, tm, cd, *rest = i.split()
-    prs += [pr(pid=pd, tty = ty, time = tm, cmd = cd)]
-pd, ty, tm, cd = None, None, None, None
-        
-# b = a.read()  
-print(b)
-
+print(read_top_output())
+                     
 app = Flask(__name__)
 
 @app.route("/")
@@ -58,19 +80,12 @@ def hello_world():
 
 @app.route("/table")
 def ret_table():
-    a = os.popen("ps", mode='r', buffering=-1)
-    b = ""
-    prs = []
-    for i in a.readlines()[1:]:
-        print(i.split())
-        pd, ty, tm, cd, *rest = i.split()
-        prs += [pr(pid=pd, tty = ty, time = tm, cmd = cd)]
-    pd, ty, tm, cd = None, None, None, None
-    return render_template('table.html', prs=prs)
+    top_parse = parse_top(read_top_output())
+    return render_template('table.html', prs=top_parse[5])
 
 @app.route('/index/')
-@app.route('/index/<name>/')
-def hello(name=None):
-    
-    searchword = request.args.get('key', '')
-    return render_template('index.html', person=name, key=searchword, prs=prs)
+def hello():
+    top_parse = parse_top(read_top_output())
+    return render_template('index.html', prs=top_parse[5])
+
+parse_top(read_top_output())
