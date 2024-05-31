@@ -36,17 +36,34 @@ class pr_top():
         self.time = time
         self.command = command
 
-# def parse_top(top):
-#     top_info = []
-#     tasks_count = []
-#     cpu = []
-#     mem = []
-#     swap = []
-#     tasks = []
-#     for i in range(len(top.split("\n"))):
-#         if i == 0:
-#             j = top.split("\n")[0].split()
-#             top_info += [j[2], j[4], j[5]]
+def parse_top(top):
+    top_info = []
+    tasks_count = []
+    cpu = []
+    mem = []
+    swap = []
+    tasks = []
+    for i in range(len(top.split("\n"))):
+        j = top.split("\n")[i].split()
+        if i == 0:
+            top_info += [j[2], j[4], j[5], j[10], j[11], j[12]]
+        elif i == 1:
+            tasks_count += [j[1], j[3], j[5], j[7], j[9]]
+        elif i == 2:
+            cpu += [j[1], j[3], j[5], j[7], j[9], j[11], j[13], j[15]]
+        elif i == 3:
+            mem += [j[3], j[5], j[7], j[9]]
+        elif i == 4:
+            swap += [j[2], j[4], j[6], j[8]]
+        elif i in [5, 6, len(top.split("\n")) - 1]:
+            pass
+        else:
+            task_top = pr_top(j[0], j[1], j[2], j[3], 
+                              j[4], j[5], j[6], j[7], 
+                              j[8], j[9], j[10], j[11])
+            tasks += [task_top]
+    task_top = None
+    return [top_info, tasks_count, cpu, mem, swap, tasks]
 
 print(read_top_output())
 
@@ -81,3 +98,5 @@ def hello(name=None):
     top_output2 = top_output.replace("\n", "<br>")
     # searchword = request.args.get('key', '')
     return render_template('hello.html', prs=top_output2) # person=name, key=searchword,
+
+parse_top(read_top_output())
