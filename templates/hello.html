@@ -5,45 +5,21 @@
   <title>Server's data</title>
 </head>
 <body>
-  Hello, {{person}}. Key = {{key}}
-  <table id="data" class="table table-striped">
-      <thead>
-          <tr>
-            <th>PID</th>
-            <th>TTY</th>
-            <th>TIME</th>
-            <th>CMD</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for pr in prs %}
-            <tr>
-              <td>{{ pr.pid }}</td>
-              <td>{{ pr.tty }}</td>
-              <td>{{ pr.time }}</td>
-              <td>{{ pr.cmd }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-  </table>
-  <p>Update</p>
+  <p class="htop">
+    {{ prs|safe }}
+  </p>
+  <p class="upd">Update</p>
   <script>
-    // $( "p" ).on( "click", function() {
-    //   $.get( "../../table", function( data ) {
-    //     $('table').html(data);
-    //   });
-    // } );
-
     function updateTable() {
       $.get( "../../table", function( data ) {
-        $('table').html(data);
+        $('p.htop').html(data);
       });
     }
 
-    $( "p" ).on( "click", function() {
+    $( "p.upd" ).on( "click", function() {
       updateTable();
     } );
-    
-    setInterval(updateTable, 2000);
+
+    setInterval(updateTable, 10000);
   </script>
 </body>
