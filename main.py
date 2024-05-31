@@ -70,9 +70,18 @@ def parse_top(top):
     return [top_info, tasks_count, cpu, mem, swap, tasks]
 
 def parse_htop(htop):
-    soup = BeautifulSoup(htop)
-    # soup.find(text='span style="font-weight:bold;filter: contrast(70%) brightness(190%);color:dimgray;"')
+    soup = BeautifulSoup(htop, 'html.parser')
     return soup.prettify()
+def htop_cpu(htop):
+    soup = BeautifulSoup(htop, 'html.parser')
+    # soup.find(text='span style="font-weight:bold;filter: contrast(70%) brightness(190%);color:dimgray;"')
+    target_spans = soup.find_all('span', style="font-weight:bold;filter: contrast(70%) brightness(190%);color:dimgray;")
+    contents = [span.text.strip() for span in target_spans]
+    contents2 = []
+    for i in contents:
+        if "%" in i:
+            contents2.append(i)
+    return contents2
 
 print(read_top_output())
                      
@@ -106,4 +115,4 @@ def hello():
     return render_template('hello.html', prs=parse_htop(read_htop_output()))
 
 # parse_top(read_top_output())
-print(parse_htop(read_htop_output()))
+# print(htop_cpu(read_htop_output()))
