@@ -15,7 +15,7 @@ def read_top_output():
         return output
 
 def read_htop_output():
-    return os.popen("echo q | htop | aha --black --line-fix").read()
+    return os.popen("sleep 1; echo q | htop | aha --black --line-fix").read()
 
 class pr():
     def __init__(self, pid, tty, time, cmd):
