@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 import os
 import subprocess
+from bs4 import BeautifulSoup
 # flask --app main run
 # flask --app main run --debug --host 0.0.0.0
 
@@ -68,6 +69,11 @@ def parse_top(top):
     task_top = None
     return [top_info, tasks_count, cpu, mem, swap, tasks]
 
+def parse_htop(htop):
+    soup = BeautifulSoup(htop)
+    # soup.find(text='span style="font-weight:bold;filter: contrast(70%) brightness(190%);color:dimgray;"')
+    return soup.prettify()
+
 print(read_top_output())
                      
 app = Flask(__name__)
@@ -93,10 +99,11 @@ def hello():
 
 @app.route("/table")
 def ret_table():
-    return render_template('table.html', prs=read_htop_output())
+    return render_template('table.html', prs=parse_htop(read_htop_output()))
 
 @app.route('/hello/')
 def hello():
-    return render_template('hello.html', prs=read_htop_output())
+    return render_template('hello.html', prs=parse_htop(read_htop_output()))
 
-parse_top(read_top_output())
+# parse_top(read_top_output())
+print(parse_htop(read_htop_output()))
