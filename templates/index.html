@@ -6,18 +6,21 @@
     <link href="style.css" rel="stylesheet" />
     <title>Server</title>
     <style>
-        div.upd {
-            vertical-align: middle;
+        p.upd {
             text-align: center;
             font-size: 24px;
+            margin: 0;
+            vertical-align: middle;
         }
         
-        p.upd {
+        div.upd {
+            vertical-align: middle;
             width: 500px;
             border: 1px solid black;
             background-color: rgba(0, 0, 0, 0.3);
             height: 52px;
             border-radius: 10px;
+            display: flex;
             justify-content: center;
             align-items: center;
             align-content: center;
@@ -63,9 +66,9 @@
             {% endfor %}
         </tbody>
     </table>
-    <p class="upd">
-        <div class="upd">Update</div>
-    </p>
+    <div class="upd">
+        <p class="upd">Update</p>
+    </div>
     <script>
         function updateTable() {
             $.get("../../table", function(data) {
@@ -73,7 +76,7 @@
             });
         }
 
-        $("p.upd").on("click", function() {
+        $("div.upd").on("click", function() {
             updateTable();
         });
 
