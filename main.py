@@ -93,7 +93,7 @@ def ret_table_css():
     return render_template('table_css.html', prs=top_parse[5])
 
 @app.route('/index/')
-def hello():
+def index():
     top_parse = parse_top(read_top_output())
     return render_template('index.html', prs=top_parse[5])
 
