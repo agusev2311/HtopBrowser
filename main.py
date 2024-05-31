@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 import os
 import subprocess
 # flask --app main run
+# flask --app main run --debug --host 0.0.0.0
 
 def read_top_output():
     process = subprocess.Popen(['top', '-b', '-n', '1'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -20,6 +21,21 @@ class pr():
         self.time = time
         self.cmd = cmd
 
+class pr_top():
+    def __init__(self, pid, user, pr, ni, virt, res, shr, s, cpu, mem, time, command):
+        self.pid = pid
+        self.user = user
+        self.pr = pr
+        self.ni = ni
+        self.virt = virt
+        self.res = res
+        self.shr = shr
+        self.s = s
+        self.cpu = cpu
+        self.mem = mem
+        self.time = time
+        self.command = command
+
 # def parse_top(top):
 #     top_info = []
 #     tasks_count = []
@@ -32,18 +48,7 @@ class pr():
 #             j = top.split("\n")[0].split()
 #             top_info += [j[2], j[4], j[5]]
 
-
-a = os.popen("ps", mode='r', buffering=-1)
-b = ""
-prs = []
-for i in a.readlines()[1:]:
-    print(i.split())
-    pd, ty, tm, cd, *rest = i.split()
-    prs += [pr(pid=pd, tty = ty, time = tm, cmd = cd)]
-pd, ty, tm, cd = None, None, None, None
-        
-# b = a.read()  
-print(b)
+print(read_top_output())
 
 app = Flask(__name__)
 
@@ -58,19 +63,21 @@ def hello_world():
 
 @app.route("/table")
 def ret_table():
-    a = os.popen("ps", mode='r', buffering=-1)
-    b = ""
-    prs = []
-    for i in a.readlines()[1:]:
-        print(i.split())
-        pd, ty, tm, cd, *rest = i.split()
-        prs += [pr(pid=pd, tty = ty, time = tm, cmd = cd)]
-    pd, ty, tm, cd = None, None, None, None
-    return render_template('table.html', prs=prs)
+    # a = os.popen("ps", mode='r', buffering=-1)
+    # b = ""
+    # prs = []
+    # for i in a.readlines()[1:]:
+    #     print(i.split())
+    #     pd, ty, tm, cd, *rest = i.split()
+    #     prs += [pr(pid=pd, tty = ty, time = tm, cmd = cd)]
+    # pd, ty, tm, cd = None, None, None, None
+    top_output = read_top_output()
+    top_output2 = top_output.replace("\n", "<br>")
+    return render_template('table.html', prs=top_output2)
 
 @app.route('/hello/')
-@app.route('/hello/<name>/')
 def hello(name=None):
-    
-    searchword = request.args.get('key', '')
-    return render_template('hello.html', person=name, key=searchword, prs=prs)
+    top_output = read_top_output()
+    top_output2 = top_output.replace("\n", "<br>")
+    # searchword = request.args.get('key', '')
+    return render_template('hello.html', prs=top_output2) # person=name, key=searchword,
