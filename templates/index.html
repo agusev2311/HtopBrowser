@@ -10,23 +10,72 @@
             background: black;
         }
         
-        .progress {
-            width: 100%;
-            height: 50px;
-            border: 1px solid #fff;
-            padding: 12px 10px;
-            box-shadow: 0 0 10px #aaa;
-            margin-left: auto;
-            margin-right: auto;
+        #btn {
+            display: block;
+            margin: 0 auto;
+            position: relative;
+            top: 45%;
+            transform: translateY(-50%);
+            font-family: "Segoe UI";
+            font-size: 20px;
+            padding: 8px 20px;
+            color: black;
+            background-color: transparent;
+            border: 1px solid black
         }
         
-        .progress .bar {
-            width: 40%;
+        #progress-bar-container {
+            width: 100%;
+            height: 60px;
+            margin: 0 auto;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 35px;
+            overflow: hidden;
+            margin-top: 100px;
+            border-color: white;
+        }
+        
+        .progress-bar-child {
+            width: 100%;
             height: 100%;
-            background: red;
-            background-repeat: repeat;
-            animation: shine 4s ease-in infinite, end 1s ease-out 1;
-            transition: width 3s ease;
+        }
+        
+        .progress {
+            color: white;
+            text-align: center;
+            line-height: 75px;
+            font-size: 35px;
+            font-family: "Segoe UI";
+            animation-direction: reverse;
+            background: #e5405e;
+            /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(to right, #e5405e 0%, #ffdb3a 45%, #3fffa2 100%);
+        }
+        
+        .shrinker {
+            background-color: black;
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+        }
+        
+        .timelapse {
+            animation-name: timelapse;
+            animation-fill-mode: forwards;
+            animation-duration: 2s;
+            animation-timing-function: cubic-bezier(.86, .05, .4, .96);
+        }
+        
+        @keyframes timelapse {
+            0% {
+                width: 100%;
+            }
+            100% {
+                width: 0%;
+            }
         }
         
         body {
@@ -91,7 +140,7 @@
             table {
                 width: 50%;
             }
-            .progress {
+            #progress-bar-container {
                 width: 50%;
             }
         }
@@ -99,11 +148,12 @@
 </head>
 
 <body>
-    <div class="progress">
-        <div class="bar">
-            <div class="progress-value"></div>
-        </div>
+
+    <div id="progress-bar-container">
+        <div class="progress-bar-child progress"></div>
+        <div class="progress-bar-child shrinker timelapse"></div>
     </div>
+
 
 
 
@@ -158,6 +208,10 @@
 
         $("div.upd").on("click", function() {
             updateTable();
+            $('.shrinker').removeClass('timelapse');
+            setTimeout(function() {
+                $('.shrinker').addClass('timelapse');
+            }, 500)
         });
 
         setInterval(updateTable, 2000);
