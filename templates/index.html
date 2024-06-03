@@ -33,8 +33,10 @@
             transform: translateY(-50%);
             border-radius: 35px;
             overflow: hidden;
-            margin-top: 100px;
+            margin-top: 60px;
             border-color: white;
+            color: white;
+            text-align: center;
         }
         
         .progress-bar-child {
@@ -51,7 +53,7 @@
             animation-direction: reverse;
             background: #e5405e;
             /* Chrome10-25,Safari5.1-6 */
-            background: linear-gradient(to right, #e5405e 0%, #ffdb3a 45%, #3fffa2 100%);
+            background: linear-gradient(to left, #e5405e 0%, #ffdb3a 45%, #3fffa2 100%);
         }
         
         .shrinker {
@@ -65,8 +67,14 @@
         .timelapse {
             animation-name: timelapse;
             animation-fill-mode: forwards;
-            animation-duration: 2s;
+            animation-duration: 0.5s;
             animation-timing-function: cubic-bezier(.86, .05, .4, .96);
+        }
+        
+        @property --progress {
+            syntax: "<length>";
+            initial-value: 0%;
+            inherits: true;
         }
         
         @keyframes timelapse {
@@ -74,7 +82,7 @@
                 width: 100%;
             }
             100% {
-                width: 0%;
+                width: 30%;
             }
         }
         
