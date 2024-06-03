@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_from_directory
 import os
 import subprocess
 from bs4 import BeautifulSoup
@@ -16,7 +16,8 @@ def read_top_output():
         return output
 
 def read_htop_output():
-    return os.popen("sleep 1; echo q | htop | aha --black --line-fix").read()
+    ans = os.popen("sleep 1; echo q | htop | aha --black --line-fix").read()
+    return ans
 
 class pr():
     def __init__(self, pid, tty, time, cmd):
@@ -72,6 +73,10 @@ def parse_top(top):
 def parse_htop(htop):
     soup = BeautifulSoup(htop, 'html.parser')
     return soup.prettify()
+    soup2 = soup.find("pre")
+    ans = soup2.prettify()
+    return ans
+
 def htop_cpu(htop):
     soup = BeautifulSoup(htop, 'html.parser')
     # soup.find(text='span style="font-weight:bold;filter: contrast(70%) brightness(190%);color:dimgray;"')
@@ -83,16 +88,17 @@ def htop_cpu(htop):
             contents2.append(i)
     return contents2
 
-
 print(read_top_output())
-
-
 
 def get_mem_progress_bar(c):
     return 100 - c[0] / (float(c[2]))
 def get_mem_info(c):
     return "total: " + str(c[0]) + ", free: " + str(c[1]) + ", used: " + str(c[2])
 app = Flask(__name__)
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 @app.route("/")
 def hello_world():
@@ -124,9 +130,13 @@ def hello():
 @app.route("/mem_info")
 def mem_info():
     return render_template('mem_info.html', mem_info=get_mem_info(parse_top(read_top_output())[3]))
+
 @app.route("/mem_info_bar")
 def mem_info_bar():
     return render_template('mem_info_bar.html', percent_mem=get_mem_progress_bar(parse_top(read_top_output())[3]))
-print(get_mem_progress_bar(parse_top(read_top_output())[3]))
+
+# print(get_mem_progress_bar(parse_top(read_top_output())[3]))
 # parse_top(read_top_output())
 # print(htop_cpu(read_htop_output()))
+# print(read_htop_output())
+# print(parse_htop())
