@@ -16,7 +16,8 @@ def read_top_output():
         return output
 
 def read_htop_output():
-    return os.popen("sleep 1; echo q | htop | aha --black --line-fix").read()
+    ans = os.popen("sleep 1; echo q | htop | aha --black --line-fix").read()
+    return ans
 
 class pr():
     def __init__(self, pid, tty, time, cmd):
@@ -71,7 +72,10 @@ def parse_top(top):
 
 def parse_htop(htop):
     soup = BeautifulSoup(htop, 'html.parser')
-    return soup.prettify()
+    soup2 = soup.find("pre")
+    ans = soup2.prettify()
+    return ans
+
 def htop_cpu(htop):
     soup = BeautifulSoup(htop, 'html.parser')
     # soup.find(text='span style="font-weight:bold;filter: contrast(70%) brightness(190%);color:dimgray;"')
@@ -120,4 +124,6 @@ def hello():
     return render_template('hello.html', prs=parse_htop(read_htop_output()))
 
 # parse_top(read_top_output())
-print(htop_cpu(read_htop_output()))
+# print(htop_cpu(read_htop_output()))
+# print(read_htop_output())
+# print(parse_htop())

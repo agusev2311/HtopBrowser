@@ -6,9 +6,9 @@
 </head>
 <body>
   <p class="htop">
-    {{ prs|safe }}
+    <em>Loading...</em>
   </p>
-  <p class="upd">Update</p>
+  <p class="upd"><b>Update</b></p>
   <script>
     function updateTable() {
       $.get( "../../table", function( data ) {
@@ -20,6 +20,8 @@
       updateTable();
     } );
 
-    setInterval(updateTable, 10000);
+    updateTable();
+
+    setInterval(updateTable, 2000);
   </script>
 </body>
