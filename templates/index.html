@@ -49,16 +49,6 @@
             width: 100%;
         }
         
-        .timelapse {
-            width: {{percent_mem}}%;
-        }
-        
-        @property --progress {
-            syntax: "<length>";
-            initial-value: 0%;
-            inherits: true;
-        }
-        
         body {
             background-color: black;
         }
@@ -125,7 +115,7 @@
                 width: 50%;
             }
         }
-
+        
         .mem_info {
             color: white;
             text-align: center;
@@ -137,9 +127,9 @@
 
 <body>
 
-    <div id="progress-bar-container">
+    <div id="progress-bar-container" class="mem_bar">
         <div class="progress-bar-child progress"></div>
-        <div class="progress-bar-child shrinker timelapse mem_info_bar"></div>
+        <div class="progress-bar-child shrinker" style="width: {{percent_mem}}%;"></div>
     </div>
     <div class="mem_info">
         {{ mem_info }}
@@ -190,6 +180,7 @@
                 $('table.data').html(data);
             });
         }
+
         function updMemStat() {
             $('.shrinker').removeClass('timelapse');
             $('.shrinker').addClass('timelapse');
@@ -197,7 +188,7 @@
                 $('div.mem_info').html(data);
             });
             $.get("../../mem_info_bar", function(data) {
-                $('div.progress-bar-child.shrinker.timelapse.mem_info_bar').html(data);
+                $('.mem_bar').html(data);
             });
         }
         $("div.upd").on("click", function() {
@@ -207,6 +198,5 @@
 
         setInterval(updateTable, 2000);
         setInterval(updMemStat, 2000);
-        
     </script>
 </body>

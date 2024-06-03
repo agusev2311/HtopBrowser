@@ -2,7 +2,6 @@ from flask import Flask, render_template, request
 import os
 import subprocess
 from bs4 import BeautifulSoup
-import random
 # flask --app main run
 # flask --app main run --debug --host 0.0.0.0
 
@@ -90,7 +89,7 @@ print(read_top_output())
 
 
 def get_mem_progress_bar(c):
-    return 100 - c[0] / (c[0]-c[1])
+    return 100 - c[0] / (float(c[2]))
 def get_mem_info(c):
     return "total: " + str(c[0]) + ", free: " + str(c[1]) + ", used: " + str(c[2])
 app = Flask(__name__)
@@ -127,6 +126,7 @@ def mem_info():
     return render_template('mem_info.html', mem_info=get_mem_info(parse_top(read_top_output())[3]))
 @app.route("/mem_info_bar")
 def mem_info_bar():
-    return render_template('mem_info_bar.html', percent_mem=random.randint(0, 100))
+    return render_template('mem_info_bar.html', percent_mem=get_mem_progress_bar(parse_top(read_top_output())[3]))
+print(get_mem_progress_bar(parse_top(read_top_output())[3]))
 # parse_top(read_top_output())
 # print(htop_cpu(read_htop_output()))
