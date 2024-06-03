@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_from_directory
 import os
 import subprocess
 from bs4 import BeautifulSoup
@@ -87,6 +87,11 @@ print(read_top_output())
                      
 app = Flask(__name__)
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
 @app.route("/")
 def hello_world():
     top_output = read_top_output()
@@ -115,4 +120,4 @@ def hello():
     return render_template('hello.html', prs=parse_htop(read_htop_output()))
 
 # parse_top(read_top_output())
-# print(htop_cpu(read_htop_output()))
+print(htop_cpu(read_htop_output()))
