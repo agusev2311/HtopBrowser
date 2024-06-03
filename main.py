@@ -135,9 +135,9 @@ def mem_info():
 def mem_info_bar():
     return render_template('mem_info_bar.html', percent_mem=get_mem_progress_bar(parse_top(read_top_output())[3]))
 
-@app.route("/res")
-def res():
-    return render_template('result.html', prs=parse_htop(read_htop_output()))
+# @app.route("/res")
+# def res():
+#     return render_template('result.html', prs=parse_htop(read_htop_output()))
 
 @app.route("/res_table")
 def res():
