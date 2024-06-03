@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 import os
 import subprocess
+from bs4 import BeautifulSoup
 # flask --app main run
 # flask --app main run --debug --host 0.0.0.0
 
@@ -68,6 +69,20 @@ def parse_top(top):
     task_top = None
     return [top_info, tasks_count, cpu, mem, swap, tasks]
 
+def parse_htop(htop):
+    soup = BeautifulSoup(htop, 'html.parser')
+    return soup.prettify()
+def htop_cpu(htop):
+    soup = BeautifulSoup(htop, 'html.parser')
+    # soup.find(text='span style="font-weight:bold;filter: contrast(70%) brightness(190%);color:dimgray;"')
+    target_spans = soup.find_all('span', style="font-weight:bold;filter: contrast(70%) brightness(190%);color:dimgray;")
+    contents = [span.text.strip() for span in target_spans]
+    contents2 = []
+    for i in contents:
+        if "%" in i:
+            contents2.append(i)
+    return contents2
+
 print(read_top_output())
                      
 app = Flask(__name__)
@@ -89,14 +104,15 @@ def ret_table_css():
 @app.route('/index/')
 def index():
     top_parse = parse_top(read_top_output())
-    return render_template('index.html', prs=top_parse[5])
+    return render_template('index.html', prs=top_parse[5], percent_mem=0)
 
 @app.route("/table")
 def ret_table():
-    return render_template('table.html', prs=read_htop_output())
+    return render_template('table.html', prs=parse_htop(read_htop_output()))
 
 @app.route('/hello/')
 def hello():
-    return render_template('hello.html', prs=read_htop_output())
+    return render_template('hello.html', prs=parse_htop(read_htop_output()))
 
-parse_top(read_top_output())
+# parse_top(read_top_output())
+# print(htop_cpu(read_htop_output()))
