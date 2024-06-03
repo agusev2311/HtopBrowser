@@ -57,7 +57,7 @@ def parse_top(top):
         elif i == 2:
             cpu += [j[1], j[3], j[5], j[7], j[9], j[11], j[13], j[15]]
         elif i == 3:
-            mem += [j[3], j[5], j[7], j[9]]
+            mem += [float(j[3]), float(j[5]), j[7], j[9]]
         elif i == 4:
             swap += [j[2], j[4], j[6], j[8]]
         elif i in [5, 6, len(top.split("\n")) - 1]:
@@ -72,6 +72,7 @@ def parse_top(top):
 
 def parse_htop(htop):
     soup = BeautifulSoup(htop, 'html.parser')
+    return soup.prettify()
     soup2 = soup.find("pre")
     ans = soup2.prettify()
     return ans
@@ -88,13 +89,16 @@ def htop_cpu(htop):
     return contents2
 
 print(read_top_output())
-                     
+
+def get_mem_progress_bar(c):
+    return 100 - c[0] / (float(c[2]))
+def get_mem_info(c):
+    return "total: " + str(c[0]) + ", free: " + str(c[1]) + ", used: " + str(c[2])
 app = Flask(__name__)
 
 @app.route('/favicon.ico')
 def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static'),
-                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 @app.route("/")
 def hello_world():
@@ -113,7 +117,7 @@ def ret_table_css():
 @app.route('/index/')
 def index():
     top_parse = parse_top(read_top_output())
-    return render_template('index.html', prs=top_parse[5])
+    return render_template('index.html', prs=top_parse[5], percent_mem=get_mem_progress_bar(parse_top(read_top_output())[3]), mem_info=get_mem_info(parse_top(read_top_output())[3]))
 
 @app.route("/table")
 def ret_table():
@@ -123,6 +127,15 @@ def ret_table():
 def hello():
     return render_template('hello.html', prs=parse_htop(read_htop_output()))
 
+@app.route("/mem_info")
+def mem_info():
+    return render_template('mem_info.html', mem_info=get_mem_info(parse_top(read_top_output())[3]))
+
+@app.route("/mem_info_bar")
+def mem_info_bar():
+    return render_template('mem_info_bar.html', percent_mem=get_mem_progress_bar(parse_top(read_top_output())[3]))
+
+# print(get_mem_progress_bar(parse_top(read_top_output())[3]))
 # parse_top(read_top_output())
 # print(htop_cpu(read_htop_output()))
 # print(read_htop_output())
