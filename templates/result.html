@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <title>Server's data</title>
+</head>
+<body>
+  <p class="res">
+    Top info: <br>
+        Time: <br>
+        Users: <br>
+    CPU: <br>
+    Mem: <br>
+
+  </p>
+  <p class="upd"><b>Update</b></p>
+  <script>
+    function updateTable() {
+      $.get( "../../table", function( data ) {
+        $('p.res').html(data);
+      });
+    }
+
+    $( "p.upd" ).on( "click", function() {
+      updateTable();
+    } );
+
+    updateTable();
+
+    setInterval(updateTable, 2000);
+  </script>
+</body>
