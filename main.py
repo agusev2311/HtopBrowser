@@ -86,7 +86,10 @@ def htop_cpu(htop):
     for i in contents:
         if "%" in i:
             contents2.append(i)
-    return contents2
+    contents3 = []
+    for i in contents2:
+        contents3.append(float(i[:-1]))
+    return contents3
 
 print(read_top_output())
 
@@ -134,6 +137,24 @@ def mem_info():
 @app.route("/mem_info_bar")
 def mem_info_bar():
     return render_template('mem_info_bar.html', percent_mem=get_mem_progress_bar(parse_top(read_top_output())[3]))
+
+@app.route("/cpu_info")
+def cpu_info():
+    cpu_data = htop_cpu(read_htop_output())
+    return sum(cpu_data) / len(cpu_data)
+
+@app.route("/cpu_cores_count")
+def cpu_info():
+    cpu_info_abc = len(htop_cpu(read_htop_output())) > 24
+    if (len(htop_cpu(read_htop_output())) > 24):
+        return "0"
+    else:
+        return f"{len(cpu_info_abc)}"
+
+@app.route("/cpu_info_core/<core_numb>")
+def cpu_info_core(core_numb):
+    # нумирация начинается с 0
+    return htop_cpu(read_htop_output())[core_numb]
 
 # print(get_mem_progress_bar(parse_top(read_top_output())[3]))
 # parse_top(read_top_output())
