@@ -145,11 +145,11 @@ def cpu_info():
 
 @app.route("/cpu_cores_count")
 def cpu_info_count():
-    cpu_info_abc = len(htop_cpu(read_htop_output())) > 24
+    cpu_info_abc = len(htop_cpu(read_htop_output()))
     if (len(htop_cpu(read_htop_output())) > 24):
         return "0"
     else:
-        return f"{len(cpu_info_abc)}"
+        return f"{cpu_info_abc}"
 
 @app.route("/cpu_info_core/<core_numb>")
 def cpu_info_core(core_numb):
