@@ -141,7 +141,7 @@ def mem_info_bar():
 @app.route("/cpu_info")
 def cpu_info():
     cpu_data = htop_cpu(read_htop_output())
-    return sum(cpu_data) / len(cpu_data)
+    return str(sum(cpu_data) / len(cpu_data))
 
 @app.route("/cpu_cores_count")
 def cpu_info_count():
@@ -154,7 +154,10 @@ def cpu_info_count():
 @app.route("/cpu_info_core/<core_numb>")
 def cpu_info_core(core_numb):
     # нумирация начинается с 0
-    return htop_cpu(read_htop_output())[core_numb]
+    try:
+        return str(htop_cpu(read_htop_output())[int(core_numb)])
+    except:
+        return "No core"
 
 # print(get_mem_progress_bar(parse_top(read_top_output())[3]))
 # parse_top(read_top_output())
