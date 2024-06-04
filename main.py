@@ -5,6 +5,9 @@ from bs4 import BeautifulSoup
 # flask --app main run
 # flask --app main run --debug --host 0.0.0.0
 
+def kill_process(process_id):
+    subprocess.call(['kill', '-9', str(process_id)])
+
 def read_top_output():
     process = subprocess.Popen(['top', '-b', '-n', '1'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout, stderr = process.communicate()
@@ -86,10 +89,7 @@ def htop_cpu(htop):
     for i in contents:
         if "%" in i:
             contents2.append(i)
-    contents3 = []
-    for i in contents2:
-        contents3.append(float(i[:-1]))
-    return contents3
+    return contents2
 
 print(read_top_output())
 
@@ -138,30 +138,20 @@ def mem_info():
 def mem_info_bar():
     return render_template('mem_info_bar.html', percent_mem=get_mem_progress_bar(parse_top(read_top_output())[3]))
 
-@app.route("/cpu_info")
-def cpu_info():
-    cpu_data = htop_cpu(read_htop_output())
-    return str(sum(cpu_data) / len(cpu_data))
+# @app.route("/res")
+# def res():
+#     return render_template('result.html', prs=parse_htop(read_htop_output()))
 
-@app.route("/cpu_cores_count")
-def cpu_info_count():
-    cpu_info_abc = len(htop_cpu(read_htop_output()))
-    if (len(htop_cpu(read_htop_output())) > 24):
-        return "0"
-    else:
-        return f"{cpu_info_abc}"
+@app.route("/res_table")
+def res():
+    return render_template('table_result.html', prs=parse_htop(read_htop_output()))
 
-@app.route("/cpu_info_core/<core_numb>")
-def cpu_info_core(core_numb):
-    # нумирация начинается с 0
-    try:
-        return str(htop_cpu(read_htop_output())[int(core_numb)])
-    except:
-        return "No core"
+@app.route("/kill/<pid>")
+def kill_pr(pid):
+    return str(kill_process(pid))
 
-# print(get_mem_progress_bar(parse_top(read_top_output())[3]))
 # parse_top(read_top_output())
-# print(htop_cpu(read_htop_output()))     
+# print(htop_cpu(read_htop_output()))
 # print(read_htop_output())
 # print(parse_htop())
 @app.route("/round_bar_css")
