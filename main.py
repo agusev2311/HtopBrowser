@@ -5,6 +5,9 @@ from bs4 import BeautifulSoup
 # flask --app main run
 # flask --app main run --debug --host 0.0.0.0
 
+def kill_process(process_id):
+    subprocess.call(['kill', '-9', str(process_id)])
+
 def read_top_output():
     process = subprocess.Popen(['top', '-b', '-n', '1'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout, stderr = process.communicate()
@@ -142,6 +145,10 @@ def mem_info_bar():
 @app.route("/res_table")
 def res():
     return render_template('table_result.html', prs=parse_htop(read_htop_output()))
+
+@app.route("/kill/<pid>")
+def kill_pr(pid):
+    return str(kill_process(pid))
 
 # parse_top(read_top_output())
 # print(htop_cpu(read_htop_output()))
