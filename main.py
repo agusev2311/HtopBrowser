@@ -6,7 +6,11 @@ from bs4 import BeautifulSoup
 # flask --app main run --debug --host 0.0.0.0
 
 def kill_process(process_id):
-    subprocess.call(['kill', '-9', str(process_id)])
+    try:
+        subprocess.call(['kill', '-9', str(process_id)])
+        return "Ok"
+    except:
+        return "<i>Failed :(<i>"
 
 def read_top_output():
     process = subprocess.Popen(['top', '-b', '-n', '1'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
