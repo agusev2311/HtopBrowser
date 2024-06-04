@@ -161,6 +161,9 @@ def cpu_info_core(core_numb):
 
 # print(get_mem_progress_bar(parse_top(read_top_output())[3]))
 # parse_top(read_top_output())
-# print(htop_cpu(read_htop_output()))
+# print(htop_cpu(read_htop_output()))     
 # print(read_htop_output())
 # print(parse_htop())
+@app.route("/round_bar_css")
+def round_bar_css():
+    return render_template('round_bar_css.html', cpu_info=htop_cpu(read_htop_output())[0])
