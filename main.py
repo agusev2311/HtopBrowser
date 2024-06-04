@@ -92,11 +92,9 @@ def htop_cpu(htop):
     contents2 = []
     for i in contents:
         if "%" in i:
-            contents2.append(i)
-    contents3 = []
-    for i in contents2:
-        contents3.append(float(i[:-1]))
-    return contents3
+            contents2.append(float(i[:-1]))
+    return contents2
+
 
 print(read_top_output())
 
@@ -145,37 +143,36 @@ def mem_info():
 def mem_info_bar():
     return render_template('mem_info_bar.html', percent_mem=get_mem_progress_bar(parse_top(read_top_output())[3]))
 
+# @app.route("/res")
+# def res():
+#     return render_template('result.html', prs=parse_htop(read_htop_output()))
+
+@app.route("/res_table")
+def res():
+    return render_template('table_result.html', prs=parse_htop(read_htop_output()))
+
+@app.route("/kill/<pid>")
+def kill_pr(pid):
+    return str(kill_process(pid))
+
 @app.route("/cpu_info")
 def cpu_info():
     cpu_data = htop_cpu(read_htop_output())
     return str(sum(cpu_data) / len(cpu_data))
 
 @app.route("/cpu_cores_count")
-def cpu_info_count():
-    cpu_info_abc = len(htop_cpu(read_htop_output()))
+def cpu_cores_count():
+    cpu_info_abc = len(htop_cpu(read_htop_output())) > 24
     if (len(htop_cpu(read_htop_output())) > 24):
         return "0"
     else:
-        return f"{cpu_info_abc}"
+        return f"{len(cpu_info_abc)}"
 
 @app.route("/cpu_info_core/<core_numb>")
 def cpu_info_core(core_numb):
     # нумирация начинается с 0
-    try:
-        return str(htop_cpu(read_htop_output())[int(core_numb)])
-    except:
-        return "No core"
-
-@app.route("/kill/<pid>")
-def kill_pr(pid):
-    return str(kill_process(pid))
-
-@app.route("/round_bar_css")
-def round_bar_css():
-    return render_template('round_bar_css.html', cpu_info=htop_cpu(read_htop_output())[0])
-
-# print(get_mem_progress_bar(parse_top(read_top_output())[3]))
+    return htop_cpu(read_htop_output())[core_numb]
 # parse_top(read_top_output())
-# print(htop_cpu(read_htop_output()))     
+# print(htop_cpu(read_htop_output()))
 # print(read_htop_output())
 # print(parse_htop())
