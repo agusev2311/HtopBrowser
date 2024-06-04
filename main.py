@@ -144,7 +144,7 @@ def cpu_info():
     return sum(cpu_data) / len(cpu_data)
 
 @app.route("/cpu_cores_count")
-def cpu_info():
+def cpu_info_count():
     cpu_info_abc = len(htop_cpu(read_htop_output())) > 24
     if (len(htop_cpu(read_htop_output())) > 24):
         return "0"
