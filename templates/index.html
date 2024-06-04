@@ -160,6 +160,19 @@
             width: 100%;
             font-size: 36px;
         }
+        
+        th.max {
+            width: min-content;
+        }
+        
+        td.max {
+            width: 20px;
+            font-size: 20px;
+        }
+        
+        .max a {
+            text-decoration: none;
+        }
     </style>
 </head>
 
@@ -186,7 +199,7 @@
                 <th>MEM</th>
                 <th>TIME</th>
                 <th>COMMAND</th>
-                <th>KILL</th>
+                <th class="max">X</th>
             </tr>
         </thead>
         <tbody>
@@ -204,7 +217,7 @@
                 <td>{{ pr_top.mem }}</td>
                 <td>{{ pr_top.time }}</td>
                 <td>{{ pr_top.command }}</td>
-                <td><a href="http://127.0.0.1:5000/kill/{{pr_top.pid}}">kill</a></td>
+                <td class="max"><a href="http://127.0.0.1:5000/kill/{{pr_top.pid}}">❌</a></td>
             </tr>
             {% endfor %}
 
@@ -235,7 +248,6 @@
             updateTable();
             updMemStat();
         });
-
         setInterval(updateTable, 2000);
         setInterval(updMemStat, 2000);
     </script>

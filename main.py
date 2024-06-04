@@ -153,7 +153,7 @@ def res():
 
 @app.route("/kill/<pid>")
 def kill_pr(pid):
-    return str(kill_process(pid))
+    return str(kill_process(pid))+'<meta http-equiv="refresh" content="0; url=http://127.0.0.1:5000/index/" />'
 
 @app.route("/cpu_info")
 def cpu_info():
