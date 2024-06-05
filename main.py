@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, send_from_directory
 import os
 import subprocess
 from bs4 import BeautifulSoup
+import psutil
 # flask --app main run
 # flask --app main run --debug --host 0.0.0.0
 
@@ -23,7 +24,7 @@ def read_top_output():
         return output
 
 def read_htop_output():
-    ans = os.popen("sleep 1; echo q | htop | aha --black --line-fix").read()
+    ans = os.popen("htop --no-color").read()
     return ans
 
 class pr():
@@ -84,17 +85,15 @@ def parse_htop(htop):
     ans = soup2.prettify()
     return ans
 
-def htop_cpu(htop):
-    soup = BeautifulSoup(htop, 'html.parser')
-    # soup.find(text='span style="font-weight:bold;filter: contrast(70%) brightness(190%);color:dimgray;"')
-    target_spans = soup.find_all('span', style="font-weight:bold;filter: contrast(70%) brightness(190%);color:dimgray;")
-    contents = [span.text.strip() for span in target_spans]
-    contents2 = []
-    for i in contents:
-        if "%" in i:
-            contents2.append(float(i[:-1]))
-    return contents2
-
+def cpu_usage():
+    cpu_percents = psutil.cpu_percent(percpu=True)
+    return cpu_percents
+def htop_cpu2(htop):
+    contents = htop.split("%")
+    for i in range(len(contents)):
+        contents[i] = contents[i][-4:]
+    print(contents)
+    return contents
 
 print(read_top_output())
 
@@ -125,7 +124,7 @@ def ret_table_css():
 @app.route('/index/')
 def index():
     top_parse = parse_top(read_top_output())
-    return render_template('index.html', prs=top_parse[5], percent_mem=get_mem_progress_bar(parse_top(read_top_output())[3]), mem_info=get_mem_info(parse_top(read_top_output())[3]))
+    return render_template('index.html', prs=top_parse[5], percent_mem=get_mem_progress_bar(parse_top(read_top_output())[3]), mem_info=get_mem_info(parse_top(read_top_output())[3]), cpu=cpu_usage())
 
 @app.route("/table")
 def ret_table():
@@ -157,13 +156,13 @@ def kill_pr(pid):
 
 @app.route("/cpu_info")
 def cpu_info():
-    cpu_data = htop_cpu(read_htop_output())
-    return str(sum(cpu_data) / len(cpu_data))
+    cpu_data = cpu_usage()
+    return render_template('cpu_info.html', cpu=cpu_data)
 
 @app.route("/cpu_cores_count")
 def cpu_cores_count():
-    cpu_info_abc = len(htop_cpu(read_htop_output())) > 24
-    if (len(htop_cpu(read_htop_output())) > 24):
+    cpu_info_abc = len(cpu_usage()) > 24
+    if (len(cpu_usage()) > 24):
         return "0"
     else:
         return f"{len(cpu_info_abc)}"
@@ -171,8 +170,4 @@ def cpu_cores_count():
 @app.route("/cpu_info_core/<core_numb>")
 def cpu_info_core(core_numb):
     # нумирация начинается с 0
-    return htop_cpu(read_htop_output())[core_numb]
-# parse_top(read_top_output())
-# print(htop_cpu(read_htop_output()))
-# print(read_htop_output())
-# print(parse_htop())
+    return cpu_usage()[core_numb]

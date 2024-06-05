@@ -173,10 +173,17 @@
         .max a {
             text-decoration: none;
         }
+        
+        div.cpu_info {
+            color: white;
+        }
     </style>
 </head>
 
 <body>
+    <div class="cpu_info">
+        {{ cpu }}
+    </div>
     <div id="progress-bar-container" class="mem_bar">
         <div class="progress-bar-child progress"></div>
         <div class="progress-bar-child shrinker" style="width: {{percent_mem}}%;"></div>
@@ -243,6 +250,10 @@
             $.get("../../mem_info_bar", function(data) {
                 $('.mem_bar').html(data);
             });
+            $.get("../../cpu_info", function(data) {
+                $('.cpu_info').html(data);
+            });
+
         }
         $("div.upd").on("click", function() {
             updateTable();
