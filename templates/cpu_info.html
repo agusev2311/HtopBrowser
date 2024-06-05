@@ -1,6 +1,11 @@
 <div class="cpu_info">
     {% for i in cpu %}
-    <div role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" style="--value:{{i}}"></div>
+    <div>
+        {% for j in i %}
 
+        <div role="progressbar" class="cpu_info_bar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" style="--value:{{j}}">{{j}}%</div>
+
+        {% endfor %}
+    </div>
     {% endfor %}
 </div>

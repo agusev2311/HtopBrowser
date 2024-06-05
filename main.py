@@ -86,7 +86,28 @@ def parse_htop(htop):
     return ans
 
 def cpu_usage():
-    cpu_percents = psutil.cpu_percent(percpu=True)
+    cpu_percents2 = psutil.cpu_percent(percpu=True)
+    cpu_percents = []
+    for i in cpu_percents2:
+        cpu_percents.append(i)
+    if len(cpu_percents2) > 7:
+        if len(cpu_percents2) <= 24:
+            if len(cpu_percents2) % 2 == 0 and len(cpu_percents2) // 2 <= 8:
+                cpu_percents = []
+                for i in range(len(cpu_percents2) // 2):
+                    cpu_percents.append(cpu_percents2[i:i+2])
+            elif len(cpu_percents2) % 3 == 0:
+                cpu_percents = []
+                for i in range(len(cpu_percents2) // 3):
+                    cpu_percents.append(cpu_percents2[i:i+3])
+            elif len(cpu_percents2) % 4 == 0:
+                cpu_percents = []
+                for i in range(len(cpu_percents2) // 4):
+                    cpu_percents.append(cpu_percents2[i:i+4])
+            elif len(cpu_percents2) % 7 == 0:
+                cpu_percents = []
+                for i in range(len(cpu_percents2) // 7):
+                    cpu_percents.append(cpu_percents2[i:i+7])
     return cpu_percents
 def htop_cpu2(htop):
     contents = htop.split("%")

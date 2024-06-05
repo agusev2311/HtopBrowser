@@ -181,11 +181,11 @@
             width: 100%;
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-between;
+            justify-content: center;
         }
         
         div.cpu_info_bar {
-            flex: 0 0 10em;
+            color: white;
         }
     </style>
 </head>
@@ -193,8 +193,13 @@
 <body>
     <div class="cpu_info">
         {% for i in cpu %}
-        <div role="progressbar" class="cpu_info_bar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" style="--value:{{i}}"></div>
+        <div>
+            {% for j in i %}
 
+            <div role="progressbar" class="cpu_info_bar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" style="--value:{{j}}">{{j}}%</div>
+
+            {% endfor %}
+        </div>
         {% endfor %}
     </div>
     <div id="progress-bar-container" class="mem_bar">
