@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, send_from_directory
 import os
 import subprocess
 from bs4 import BeautifulSoup
+import psutil
 # flask --app main run
 # flask --app main run --debug --host 0.0.0.0
 
@@ -23,7 +24,7 @@ def read_top_output():
         return output
 
 def read_htop_output():
-    ans = os.popen("sleep 1; echo q | htop | aha --black --line-fix").read()
+    ans = os.popen("htop --no-color").read()
     return ans
 
 class pr_top():
@@ -77,16 +78,36 @@ def parse_htop(htop):
     ans = soup2.prettify()
     return ans
 
-def htop_cpu(htop):
-    soup = BeautifulSoup(htop, 'html.parser')
-    # soup.find(text='span style="font-weight:bold;filter: contrast(70%) brightness(190%);color:dimgray;"')
-    target_spans = soup.find_all('span', style="font-weight:bold;filter: contrast(70%) brightness(190%);color:dimgray;")
-    contents = [span.text.strip() for span in target_spans]
-    contents2 = []
-    for i in contents:
-        if "%" in i:
-            contents2.append(i)
-    return contents2
+def cpu_usage():
+    cpu_percents2 = psutil.cpu_percent(percpu=True)
+    cpu_percents = []
+    for i in cpu_percents2:
+        cpu_percents.append(i)
+    if len(cpu_percents2) > 7:
+        if len(cpu_percents2) <= 24:
+            if len(cpu_percents2) % 2 == 0 and len(cpu_percents2) // 2 <= 8:
+                cpu_percents = []
+                for i in range(len(cpu_percents2) // 2):
+                    cpu_percents.append(cpu_percents2[i:i+2])
+            elif len(cpu_percents2) % 3 == 0:
+                cpu_percents = []
+                for i in range(len(cpu_percents2) // 3):
+                    cpu_percents.append(cpu_percents2[i:i+3])
+            elif len(cpu_percents2) % 4 == 0:
+                cpu_percents = []
+                for i in range(len(cpu_percents2) // 4):
+                    cpu_percents.append(cpu_percents2[i:i+4])
+            elif len(cpu_percents2) % 7 == 0:
+                cpu_percents = []
+                for i in range(len(cpu_percents2) // 7):
+                    cpu_percents.append(cpu_percents2[i:i+7])
+    return cpu_percents
+def htop_cpu2(htop):
+    contents = htop.split("%")
+    for i in range(len(contents)):
+        contents[i] = contents[i][-4:]
+    print(contents)
+    return contents
 
 print(read_top_output())
 
@@ -112,7 +133,7 @@ def ret_table_css():
 @app.route('/index/')
 def index():
     top_parse = parse_top(read_top_output())
-    return render_template('index.html', prs=top_parse[5], percent_mem=get_mem_progress_bar(parse_top(read_top_output())[3]), mem_info=get_mem_info(parse_top(read_top_output())[3]))
+    return render_template('index.html', prs=top_parse[5], percent_mem=get_mem_progress_bar(parse_top(read_top_output())[3]), mem_info=get_mem_info(parse_top(read_top_output())[3]), cpu=cpu_usage())
 
 @app.route("/mem_info")
 def mem_info():
@@ -122,6 +143,28 @@ def mem_info():
 def mem_info_bar():
     return render_template('mem_info_bar.html', percent_mem=get_mem_progress_bar(parse_top(read_top_output())[3]))
 
+@app.route("/res_table")
+def res():
+    return render_template('table_result.html', prs=parse_htop(read_htop_output()))
+
 @app.route("/kill/<pid>")
 def kill_pr(pid):
-    return str(kill_process(pid))
+    return str(kill_process(pid))+'<meta http-equiv="refresh" content="0; url=http://127.0.0.1:5000/index/" />'
+
+@app.route("/cpu_info")
+def cpu_info():
+    cpu_data = cpu_usage()
+    return render_template('cpu_info.html', cpu=cpu_data)
+
+@app.route("/cpu_cores_count")
+def cpu_cores_count():
+    cpu_info_abc = len(cpu_usage()) > 24
+    if (len(cpu_usage()) > 24):
+        return "0"
+    else:
+        return f"{len(cpu_info_abc)}"
+
+@app.route("/cpu_info_core/<core_numb>")
+def cpu_info_core(core_numb):
+    # нумирация начинается с 0
+    return cpu_usage()[core_numb]

@@ -9,6 +9,45 @@
         body {
             background: black;
         }
+        /*@keyframes growProgressBar {
+        0%,
+        33% {
+            --pgPercentage: 0;
+        }
+        100% {
+            --pgPercentage: var(--value);
+        }
+    }
+    */
+        
+        @property --pgPercentage {
+            syntax: '<number>';
+            inherits: false;
+            initial-value: 0;
+        }
+        
+        div[role="progressbar"] {
+            --size: 7rem;
+            --fg: #369;
+            --bg: #def;
+            --pgPercentage: var(--value);
+            animation: growProgressBar 3s 1 forwards;
+            width: var(--size);
+            height: var(--size);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: radial-gradient(closest-side, black 80%, transparent 0 99.9%, black 0), conic-gradient(var(--fg) calc(var(--pgPercentage) * 1%), var(--bg) 0);
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: calc(var(--size) / 5);
+            color: var(--fg);
+            margin: auto;
+        }
+        /* 
+    div[role="progressbar"]::before {
+        counter-reset: percentage var(--value);
+        content: counter(percentage) '%';
+    } */
         
         #progress-bar-container {
             width: 100%;
@@ -20,8 +59,8 @@
             border-radius: 35px;
             overflow: hidden;
             margin-top: 60px;
-            border-color: white;
-            color: white;
+            border-color: black;
+            color: black;
             text-align: center;
         }
         
@@ -122,11 +161,47 @@
             width: 100%;
             font-size: 36px;
         }
+        
+        th.max {
+            width: min-content;
+        }
+        
+        td.max {
+            width: 20px;
+            font-size: 20px;
+        }
+        
+        .max a {
+            text-decoration: none;
+        }
+        
+        div.cpu_info {
+            color: white;
+            margin: auto;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        div.cpu_info_bar {
+            color: white;
+        }
     </style>
 </head>
 
 <body>
+    <div class="cpu_info">
+        {% for i in cpu %}
+        <div>
+            {% for j in i %}
 
+            <div role="progressbar" class="cpu_info_bar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" style="--value:{{j}}">{{j}}%</div>
+
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
     <div id="progress-bar-container" class="mem_bar">
         <div class="progress-bar-child progress"></div>
         <div class="progress-bar-child shrinker" style="width: {{percent_mem}}%;"></div>
@@ -149,6 +224,7 @@
                 <th>MEM</th>
                 <th>TIME</th>
                 <th>COMMAND</th>
+                <th class="max">X</th>
             </tr>
         </thead>
         <tbody>
@@ -166,8 +242,10 @@
                 <td>{{ pr_top.mem }}</td>
                 <td>{{ pr_top.time }}</td>
                 <td>{{ pr_top.command }}</td>
+                <td class="max"><a href="http://127.0.0.1:5000/kill/{{pr_top.pid}}">❌</a></td>
             </tr>
             {% endfor %}
+
         </tbody>
 
     </table>
@@ -190,12 +268,15 @@
             $.get("../../mem_info_bar", function(data) {
                 $('.mem_bar').html(data);
             });
+            $.get("../../cpu_info", function(data) {
+                $('.cpu_info').html(data);
+            });
+
         }
         $("div.upd").on("click", function() {
             updateTable();
             updMemStat();
         });
-
         setInterval(updateTable, 2000);
         setInterval(updMemStat, 2000);
     </script>
