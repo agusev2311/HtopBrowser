@@ -37,10 +37,11 @@
             border-radius: 50%;
             display: grid;
             place-items: center;
-            background: radial-gradient(closest-side, white 80%, transparent 0 99.9%, white 0), conic-gradient(var(--fg) calc(var(--pgPercentage) * 1%), var(--bg) 0);
+            background: radial-gradient(closest-side, black 80%, transparent 0 99.9%, black 0), conic-gradient(var(--fg) calc(var(--pgPercentage) * 1%), var(--bg) 0);
             font-family: Helvetica, Arial, sans-serif;
             font-size: calc(var(--size) / 5);
             color: var(--fg);
+            margin: auto;
         }
         /* 
     div[role="progressbar"]::before {
@@ -58,8 +59,8 @@
             border-radius: 35px;
             overflow: hidden;
             margin-top: 60px;
-            border-color: white;
-            color: white;
+            border-color: black;
+            color: black;
             text-align: center;
         }
         
@@ -176,13 +177,25 @@
         
         div.cpu_info {
             color: white;
+            margin: auto;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        div.cpu_info_bar {
+            flex: 0 0 10em;
         }
     </style>
 </head>
 
 <body>
     <div class="cpu_info">
-        {{ cpu }}
+        {% for i in cpu %}
+        <div role="progressbar" class="cpu_info_bar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" style="--value:{{i}}"></div>
+
+        {% endfor %}
     </div>
     <div id="progress-bar-container" class="mem_bar">
         <div class="progress-bar-child progress"></div>
