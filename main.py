@@ -27,13 +27,6 @@ def read_htop_output():
     ans = os.popen("htop --no-color").read()
     return ans
 
-class pr():
-    def __init__(self, pid, tty, time, cmd):
-        self.pid = pid
-        self.tty = tty
-        self.time = time
-        self.cmd = cmd
-
 class pr_top():
     def __init__(self, pid, user, pr, ni, virt, res, shr, s, cpu, mem, time, command):
         self.pid = pid
@@ -130,12 +123,7 @@ def favicon():
 
 @app.route("/")
 def hello_world():
-    top_output = read_top_output()
-    b = ""
-    for i in top_output.split("\n"):
-        b += f"{i}<br/>"
-    # return f"<p>Go to /hello/name?key=abc</p>"
-    return f"<p>{b}<p/>"
+    return "Nothing here"
 
 @app.route("/table_css")
 def ret_table_css():
@@ -147,14 +135,6 @@ def index():
     top_parse = parse_top(read_top_output())
     return render_template('index.html', prs=top_parse[5], percent_mem=get_mem_progress_bar(parse_top(read_top_output())[3]), mem_info=get_mem_info(parse_top(read_top_output())[3]), cpu=cpu_usage())
 
-@app.route("/table")
-def ret_table():
-    return render_template('table.html', prs=parse_htop(read_htop_output()))
-
-@app.route('/hello/')
-def hello():
-    return render_template('hello.html', prs=parse_htop(read_htop_output()))
-
 @app.route("/mem_info")
 def mem_info():
     return render_template('mem_info.html', mem_info=get_mem_info(parse_top(read_top_output())[3]))
@@ -162,10 +142,6 @@ def mem_info():
 @app.route("/mem_info_bar")
 def mem_info_bar():
     return render_template('mem_info_bar.html', percent_mem=get_mem_progress_bar(parse_top(read_top_output())[3]))
-
-# @app.route("/res")
-# def res():
-#     return render_template('result.html', prs=parse_htop(read_htop_output()))
 
 @app.route("/res_table")
 def res():
