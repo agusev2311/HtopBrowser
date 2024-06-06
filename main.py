@@ -119,34 +119,25 @@ def favicon():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
-        return '''
-               <form action='login' method='POST'>
-                <input type='text' name='email' id='email' placeholder='email'/>
-                <input type='password' name='password' id='password' placeholder='password'/>
-                <input type='submit' name='submit'/>
-               </form>
-               '''
+        return render_template('login.html')
+        # return '''
+        #        <form action='login' method='POST'>
+        #         <input type='text' name='email' id='email' placeholder='email'/>
+        #         <input type='password' name='password' id='password' placeholder='password'/>
+        #         <input type='submit' name='submit'/>
+        #        </form>
+        #        '''
     
     email = flask.request.form['email']
     if email in users and flask.request.form['password'] == users[email]['password']:
         #user = User()
         #user.id = email
         #flask_login.login_user(user)
-        res = flask.make_response(flask.redirect("/protected"))
+        res = flask.make_response(flask.redirect("/index"))
         res.set_cookie('jwt', jwt.encode({"email": email}, "secret", algorithm="HS256"))
         return res
 
     return 'Bad login'
-
-@app.route('/protected')
-def protected():
-    if flask.request.cookies.get("jwt") != '':
-        try:
-            t = jwt.decode(flask.request.cookies.get("jwt"), key='secret', algorithms="HS256")
-        except:
-            return flask.redirect('/login')
-        return 'Logged in as: ' + jwt.decode(flask.request.cookies.get("jwt"), key='secret', algorithms="HS256")["email"] + "\nYou are logined! now redirect to <a href='/index'>/index</a>!"
-    return flask.redirect('/login')
 
 @app.route("/")
 def hello_world():
@@ -211,9 +202,8 @@ def kill_pr(pid):
             t = jwt.decode(flask.request.cookies.get("jwt"), key='secret', algorithms="HS256")
         except:
             return flask.redirect('/login')
-        return 'Logged in as: ' + jwt.decode(flask.request.cookies.get("jwt"), key='secret', algorithms="HS256")["email"] + "\nYou are logined! now redirect to /index!"
+        return str(kill_process(pid))+'<meta http-equiv="refresh" content="0; url=http://127.0.0.1:5000/index/" />'
     return flask.redirect('/login')
-    return str(kill_process(pid))+'<meta http-equiv="refresh" content="0; url=http://127.0.0.1:5000/index/" />'
 
 @app.route("/cpu_info")
 def cpu_info():
