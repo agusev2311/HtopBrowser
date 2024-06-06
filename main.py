@@ -65,7 +65,7 @@ def parse_top(top):
         elif i == 2:
             cpu += [j[1], j[3], j[5], j[7], j[9], j[11], j[13], j[15]]
         elif i == 3:
-            mem += [float(j[3]), float(j[5]), j[7], j[9]]
+            mem += [float(j[3]), float(j[5]), float(j[7]), float(j[9])]
         elif i == 4:
             swap += [j[2], j[4], j[6], j[8]]
         elif i in [5, 6, len(top.split("\n")) - 1]:
@@ -106,10 +106,10 @@ def cpu_usage():
 print(read_top_output())
 
 def get_mem_progress_bar(c):
-    return 100 - c[0] / (float(c[2]))
+    return 100 - c[0] / (float(c[2]) + float(c[3]))
 
 def get_mem_info(c):
-    return "total: " + str(c[0]) + ", free: " + str(c[1]) + ", used: " + str(c[2])
+    return "total: " + str(c[0]) + ", free: " + str(c[1]) + ", used: " + str(c[2]) + ", cache: " + str(c[3])
 app = Flask(__name__)
 
 @app.route('/favicon.ico')
@@ -247,4 +247,4 @@ def logout():
     res.set_cookie('jwt', '')
     return res
 
-app.run("0.0.0.0",8000, debug=True)
+app.run("0.0.0.0", 8000, debug=True)
