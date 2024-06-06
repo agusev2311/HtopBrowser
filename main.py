@@ -246,3 +246,5 @@ def logout():
     res = flask.make_response(flask.redirect('/login'))
     res.set_cookie('jwt', '')
     return res
+
+app.run("0.0.0.0",8000, debug=True)
