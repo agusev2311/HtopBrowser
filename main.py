@@ -106,7 +106,7 @@ def cpu_usage():
 print(read_top_output())
 
 def get_mem_progress_bar(c):
-    return 100 - c[0] / (float(c[2]) + float(c[3]))
+    return 100 - c[0] / c[1]
 
 def get_mem_info(c):
     return "total: " + str(c[0]) + ", free: " + str(c[1]) + ", used: " + str(c[2]) + ", cache: " + str(c[3])
