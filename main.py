@@ -195,7 +195,9 @@ def kill_pr(pid):
             t = jwt.decode(flask.request.cookies.get("jwt"), key='secret', algorithms="HS256")
         except:
             return flask.redirect('/login')
-        return str(kill_process(pid))+'<meta http-equiv="refresh" content="0; url=http://127.0.0.1:5000/index/" />'
+        kill_process(pid)
+        # return str(kill_process(pid))+'<meta http-equiv="refresh" content="0; url=index/" />'
+        return flask.redirect("/index")
     return flask.redirect('/login')
 
 @app.route("/cpu_info")
