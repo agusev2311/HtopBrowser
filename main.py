@@ -82,7 +82,7 @@ def cpu_usage():
     cpu_percents2 = psutil.cpu_percent(percpu=True)
     cpu_percents = []
     for i in cpu_percents2:
-        cpu_percents.append(i)
+        cpu_percents.append([i])
     if len(cpu_percents2) > 7:
         if len(cpu_percents2) <= 24:
             if len(cpu_percents2) % 2 == 0 and len(cpu_percents2) // 2 <= 8:
