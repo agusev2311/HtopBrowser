@@ -91,6 +91,14 @@
             right: 0;
             width: 100%;
         }
+
+        .cache {
+            background-color: rgba(208, 208, 208, 0.356);
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+        }
         
         body {
             background-color: white;
@@ -211,6 +219,7 @@
     </div>
     <div id="progress-bar-container" class="mem_bar">
         <div class="progress-bar-child progress"></div>
+        <div class="progress-bar-child cache" style="width: {{percent_cache}}%;"></div>
         <div class="progress-bar-child shrinker" style="width: {{percent_mem}}%;"></div>
     </div>
     <div class="mem_info">

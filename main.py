@@ -105,8 +105,11 @@ def cpu_usage():
 
 print(read_top_output())
 
-def get_mem_progress_bar(c):
+def get_mem_progress_bar2(c):
     return c[1] / c[0] * 100
+
+def get_mem_progress_bar(c):
+    return 100 - ((c[2] + c[3]) / c[0] * 100)
 
 def get_mem_info(c):
     return "total: " + str(c[0]) + ", free: " + str(c[1]) + ", used: " + str(c[2]) + ", cache: " + str(c[3])
@@ -162,7 +165,7 @@ def index():
         except:
             return flask.redirect('/login')
         top_parse = parse_top(read_top_output())
-        return render_template('index.html', prs=top_parse[5], percent_mem=get_mem_progress_bar(parse_top(read_top_output())[3]), mem_info=get_mem_info(parse_top(read_top_output())[3]), cpu=cpu_usage())
+        return render_template('index.html', prs=top_parse[5], percent_mem=get_mem_progress_bar(parse_top(read_top_output())[3]), mem_info=get_mem_info(parse_top(read_top_output())[3]), cpu=cpu_usage(), percent_cache=get_mem_progress_bar2(parse_top(read_top_output())[3]))
     return flask.redirect('/login')
 
 @app.route("/mem_info")
@@ -182,17 +185,7 @@ def mem_info_bar():
             t = jwt.decode(flask.request.cookies.get("jwt"), key='secret', algorithms="HS256")
         except:
             return flask.redirect('/login')
-        return render_template('mem_info_bar.html', percent_mem=get_mem_progress_bar(parse_top(read_top_output())[3]))
-    return flask.redirect('/login')
-
-@app.route("/res_table")
-def res():
-    if flask.request.cookies.get("jwt") != '':
-        try:
-            t = jwt.decode(flask.request.cookies.get("jwt"), key='secret', algorithms="HS256")
-        except:
-            return flask.redirect('/login')
-        return render_template('table_result.html', prs=parse_htop(read_htop_output()))
+        return render_template('mem_info_bar.html', percent_mem=get_mem_progress_bar(parse_top(read_top_output())[3]), percent_cache=get_mem_progress_bar2(parse_top(read_top_output())[3]))
     return flask.redirect('/login')
 
 @app.route("/kill/<pid>")
