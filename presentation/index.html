@@ -216,7 +216,7 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section data-background-gradient="linear-gradient(to bottom, #FF7E5F, #feb47b)">
+				<section data-background-gradient="linear-gradient(0deg, #FF7E5F, #feb47b)">
 					<h3>Htop for browser</h3>
 					<p>
 						<small>Разрабатывали <a href="https://github.com/agusev2311">Артём Гусев</a> и <a href="https://github.com/tyman123qwerty">Сошников Артемий</a></small><br>
@@ -224,99 +224,34 @@
 					</p>
 				</section>
 
-				<section data-background-gradient="linear-gradient(to bottom, #2C3E50, #4CA1AF)">
-					<h2>Цель на проект</h2>
+				<section data-background-gradient="linear-gradient(45deg, #2C3E50, #4CA1AF)">
+					<h2>Цель проекта</h2>
 					<p>
-						Сделать монитор процессов и ресурсов сервера
+						Сделать мониторинг процессов и ресурсов сервера в браузере
 					</p>
 				</section>
-
-				<section data-background-gradient="linear-gradient(to bottom, #B24592, #F15F79)">
-					<h2>Что мы сделали</h2> 
-					<ul>
-						<li>Отображение процессов</li>
-						<li>Возможность убийства процессов</li>
-						<li>Монитор ресурсов сервера</li>
-						<li>Аутентификацию</li>
-					</ul>
-				</section>
-
-				<section data-background-gradient="linear-gradient(to bottom, #FF512F, #DD2476)">
-					<h2>Примеры кода</h2>
-					<div class="multicolumn">
-					  <p>
-						<pre style="font-size: 9px; white-space: pre-wrap; overflow-x: auto; overflow-y: auto;"><code class="language-python">
-from flask import Flask, render_template, request
-import os
-import subprocess
-from bs4 import BeautifulSoup
-import psutil
-import jwt
-
-app = Flask(__name__)
-app.secret_key = open("secret_key", "r").readlines()[0]
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-if request.method == 'GET':
-	return render_template('login.html')
-
-email = request.form['email']
-if email in users and request.form['password'] == users[email]['password']:
-	res = make_response(redirect("/index"))
-	res.set_cookie('jwt', jwt.encode({"email": email}, "secret", algorithm="HS256"))
-	return res
-
-return 'Bad login'
-
-app.run("0.0.0.0", 8000, debug=True)
-						</code></pre>
-					  </p>
-				  
-					  <p>
-						<pre style="font-size: 8px; white-space: pre-wrap; overflow-x: auto;"><code style="height: max-content;" class="language-html">
-&lt;!doctype html&gt;
-&lt;html&gt;
-&lt;head&gt;
-&lt;style&gt;
-	div.cpu_info {
-	color: black;
-	margin: auto;
-	width: 100%;
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	}
-	
-	div.cpu_info_bar {
-	color: rgb(0, 0, 0);
-	}
-&lt;/style&gt;
-&lt;/head&gt;
-
-&lt;body&gt;
-&lt;div class="cpu_info"&gt;
-	{% for i in cpu %}
-	&lt;div&gt;
-	{% for j in i %}
-	&lt;div role="progressbar" 
-		class="cpu_info_bar" 
-		aria-valuenow="65" 
-		aria-valuemin="0" 
-		aria-valuemax="100" 
-		style="--value:{{j}}"&gt;{{j}}%&lt;/div&gt;
-	{% endfor %}
-	&lt;/div&gt;
-	{% endfor %}
-&lt;/div&gt;
-&lt;/body&gt;
-						</code></pre>
-					  </p>
-					</div>
+				
+				<section>
+					<section data-background-gradient="linear-gradient(90deg, #B24592, #F15F79)">
+						<h2>Что мы сделали</h2> 
+						<ul>
+							<li>Отображение процессов</li>
+							<li>Возможность завершения процессов</li>
+							<li>Мониторинг ресурсов сервера</li>
+							<li>Аутентификацию</li>
+						</ul>
+					</section>
+					<section data-background-gradient="linear-gradient(135deg, #FDC830, #F37335)">
+						<h2>Что не успели сделать</h2> 
+						<ul>
+							<li>Командную строку</li>
+							<li>Улучшенный дизайн</li>
+						</ul>
+					</section>
 				</section>
 
 				<section>
-					<section data-background-gradient="linear-gradient(to bottom, #00C9FF, #92FE9D)" data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+					<section data-background-gradient="linear-gradient(180deg, #00C9FF, #92FE9D)" data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
 						<h4>Пример работы программы</h4>
 						<h2>Процессор</h2>
 						<div class="cpu_info">
@@ -334,7 +269,7 @@ app.run("0.0.0.0", 8000, debug=True)
 							</div>
 						</div>
 					</section>
-					<section data-background-gradient="linear-gradient(to bottom, #FF5F6D, #FFC371)" data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+					<section data-background-gradient="linear-gradient(225deg, #FF5F6D, #FFC371)" data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
 						<h2>RAM</h2>
 						<div id="progress-bar-container" class="mem_bar">
 							<div class="progress-bar-child" style="color: white; text-align: center; line-height: 75px; font-size: 35px; background: #e5405e; background: linear-gradient(to left, #e5405e 0%, #ffdb3a 45%, #3fffa2 100%);"></div>
@@ -346,7 +281,7 @@ app.run("0.0.0.0", 8000, debug=True)
 						</div>
 						<h4 style="font-size: 10px;">Пример работы программы</h4>
 					</section>
-					<section data-background-gradient="linear-gradient(to bottom, #11998e, #38ef7d)" data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+					<section data-background-gradient="linear-gradient(270deg, #11998e, #38ef7d)" data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
 						<h2>Процессы</h2>
 						<table class="data" style="width: 20%;">
 							<thead>
@@ -430,7 +365,7 @@ app.run("0.0.0.0", 8000, debug=True)
 					</section>
 				</section>
 
-				<section data-background-gradient="linear-gradient(to bottom, #5A3F37, #2C7744)">
+				<section data-background-gradient="linear-gradient(315deg, #5A3F37, #2C7744)">
 					<div class="columns">
 						<div class="column">
 							<p>Проект на github</p>
@@ -449,7 +384,7 @@ app.run("0.0.0.0", 8000, debug=True)
 					</div>
 				</section>
 
-				<section data-background-gradient="linear-gradient(to bottom, #ff6b6b, #00d4ff)">
+				<section data-background-gradient="linear-gradient(360deg, #ff6b6b, #00d4ff)">
 					<h2>Спасибо за внимание</h2>
                 	<img src="https://i.ibb.co/zhxdrQL/happy.gif" alt="Котик" style="border-radius: 50%;">
 				</section>
