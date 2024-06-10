@@ -1,410 +1,423 @@
 <!doctype html>
 <html lang="ru">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<link rel="stylesheet" href="dist/reset.css">
-		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/black.css">
+    <title>reveal.js</title>
 
-		<!-- Theme used for syntax highlighted code -->
-		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/black.css">
 
-		<style>
-			* {
-				box-sizing: border-box;
-			}
-			
-			.multicolumn {
-				column-count: 2;
-				column-gap: 20px; 
-			}
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css">
 
-			@property --pgPercentage {
-				syntax: '<number>';
-				inherits: false;
-				initial-value: 0;
-			}
-			
-			div[role="progressbar"] {
-				--size: 7rem;
-				--fg: #369;
-				--bg: rgb(124, 124, 124);
-				--pgPercentage: var(--value);
-				animation: growProgressBar 3s 1 forwards;
-				width: var(--size);
-				height: var(--size);
-				border-radius: 50%;
-				display: grid;
-				place-items: center;
-				background: radial-gradient(closest-side, rgba(255, 255, 255, 0) 80%, transparent 0 99.9%, rgba(255, 255, 255, 0) 0), conic-gradient(var(--fg) calc(var(--pgPercentage) * 1%), var(--bg) 0);
-				font-family: Helvetica, Arial, sans-serif;
-				font-size: calc(var(--size) / 5);
-				margin: auto;
-			}
-			
-			#progress-bar-container {
-				width: 100%;
-				height: 60px;
-				margin: 0 auto;
-				position: relative;
-				top: 50%;
-				transform: translateY(-50%);
-				border-radius: 35px;
-				overflow: hidden;
-				margin-top: 60px;
-				border-color: white;
-				color: white;
-				text-align: center;
-				background-color: white;
-			}
-			
-			.progress-bar-child {
-				width: 100%;
-				height: 100%;
-			}
-			
-			.progress {
-				color: white;
-				text-align: center;
-				line-height: 75px;
-				font-size: 35px;
-				font-family: "Segoe UI";
-				background: #e5405e;
-				/* Chrome10-25,Safari5.1-6 */
-				background: linear-gradient(to left, #e5405e 0%, #ffdb3a 45%, #3fffa2 100%);
-			}
-			
-			.shrinker {
-				background-color: rgb(208, 208, 208);
-				position: absolute;
-				top: 0;
-				right: 0;
-				width: 100%;
-			}
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        .multicolumn {
+            column-count: 2;
+            column-gap: 20px;
+        }
+        
+        @property --pgPercentage {
+            syntax: '<number>';
+            inherits: false;
+            initial-value: 0;
+        }
+        
+        div[role="progressbar"] {
+            --size: 7rem;
+            --fg: #1E4174;
+            --bg: #DDA94B;
+            --pgPercentage: var(--value);
+            animation: growProgressBar 3s 1 forwards;
+            width: var(--size);
+            height: var(--size);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: radial-gradient(closest-side, rgba(255, 255, 255, 0) 80%, transparent 0 99.9%, rgba(255, 255, 255, 0) 0), conic-gradient(var(--fg) calc(var(--pgPercentage) * 1%), var(--bg) 0);
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: calc(var(--size) / 5);
+            margin: auto;
+        }
+        
+        #progress-bar-container {
+            width: 100%;
+            height: 60px;
+            margin: 0 auto;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 35px;
+            overflow: hidden;
+            margin-top: 60px;
+            border-color: white;
+            color: white;
+            text-align: center;
+            background-color: white;
+        }
+        
+        .progress-bar-child {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .progress {
+            color: white;
+            text-align: center;
+            line-height: 75px;
+            font-size: 35px;
+            font-family: "Segoe UI";
+            background: #e5405e;
+            /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(to left, #e5405e 0%, #ffdb3a 45%, #3fffa2 100%);
+        }
+        
+        .shrinker {
+            background-color: rgb(208, 208, 208);
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+        }
+        
+        .cache {
+            background-color: rgba(208, 208, 208, 0.356);
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+        }
+        
+        body {
+            background-color: white;
+        }
+        
+        p.upd {
+            text-align: center;
+            font-size: 24px;
+            margin: 0;
+            vertical-align: middle;
+            color: black;
+        }
+        
+        div.upd {
+            vertical-align: middle;
+            width: 500px;
+            border: 1px solid black;
+            background-color: rgba(255, 255, 255, 0.3);
+            height: 52px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+            align-self: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        div.upd:hover {
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        div.upd:active {
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+        
+        td {
+            color: white;
+            border-color: rgba(255, 255, 255, 0.7);
+            border: 1px solid;
+            padding: 1;
+            font-size: 12px;
+            width: auto;
+        }
+        
+        th {
+            color: white;
+            border-color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            font-size: 17px;
+            width: auto;
+        }
+        
+        table.data {
+            border-spacing: 0;
+            margin-right: 0px;
+        }
+        
+        .mem_info {
+            color: white;
+            text-align: center;
+            width: 100%;
+            font-size: 36px;
+        }
+        
+        th.max {
+            width: 20px;
+            font-size: 20px;
+        }
+        
+        td.max {
+            width: 20px;
+            font-size: 20px;
+        }
+        
+        .max a {
+            text-decoration: none;
+        }
+        
+        div.cpu_info {
+            color: black;
+            margin: auto;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        div.cpu_info_bar {
+            color: rgb(0, 0, 0);
+        }
+        
+        .columns {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 100%;
+            /* Растянуть колонки на весь слайд */
+        }
+        
+        .column {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .qr-code {
+            width: 150px;
+            height: 150px;
+        }
+        
+        .reveal .slides {
+            padding: 10px !important;
+            /* Уменьшение отступа */
+        }
+    </style>
+</head>
 
-			.cache {
-				background-color: rgba(208, 208, 208, 0.356);
-				position: absolute;
-				top: 0;
-				right: 0;
-				width: 100%;
-			}
-			
-			body {
-				background-color: white;
-			}
-			
-			p.upd {
-				text-align: center;
-				font-size: 24px;
-				margin: 0;
-				vertical-align: middle;
-				color: black;
-			}
-			
-			div.upd {
-				vertical-align: middle;
-				width: 500px;
-				border: 1px solid black;
-				background-color: rgba(255, 255, 255, 0.3);
-				height: 52px;
-				border-radius: 10px;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				align-content: center;
-				align-self: center;
-				margin-left: auto;
-				margin-right: auto;
-			}
-			
-			div.upd:hover {
-				background-color: rgba(255, 255, 255, 0.5);
-			}
-			
-			div.upd:active {
-				background-color: rgba(255, 255, 255, 0.7);
-			}
-			
-			td {
-				color: black;
-				border-color: rgba(0, 0, 0, 0.7);
-				border: 1px solid rgba(0, 0, 0, 0.7);
-				padding: 1;
-			}
-			
-			th {
-				color: white;
-				border-color: rgba(255, 255, 255, 0.7);
-				border: 1px solid rgba(255, 255, 255, 0.7);
-				font-size: 17px;
-			}
-			
-			/* table {
-				width: auto;
-				border-collapse: separate;
-				border-spacing: 0;
-				margin-left: auto;
-				margin-right: auto;
-			} */
-			
-			@media only screen and (min-width: 992px) {
-				table {
-					width: 50%;
-				}
-				#progress-bar-container {
-					width: 50%;
-				}
-			}
-			
-			.mem_info {
-				color: black;
-				text-align: center;
-				width: 100%;
-				font-size: 36px;
-			}
-			
-			th.max {
-				width: min-content;
-			}
-			
-			td.max {
-				width: 20px;
-				font-size: 20px;
-			}
-			
-			.max a {
-				text-decoration: none;
-			}
-			
-			div.cpu_info {
-				color: black;
-				margin: auto;
-				width: 100%;
-				display: flex;
-				flex-wrap: wrap;
-				justify-content: center;
-			}
-			
-			div.cpu_info_bar {
-				color: rgb(0, 0, 0);
-			}
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section data-background-gradient="linear-gradient(0deg, #FF7E5F, #feb47b)">
+                <h3>Htop for browser</h3>
+                <p>
+                    <small>Разрабатывали <a href="https://github.com/agusev2311">Артём Гусев</a> и <a href="https://github.com/tyman123qwerty">Сошников Артемий</a></small><br>
+                    <small>Научный руководитель <a href="https://github.com/VorontsovIE">Илья Воронцов</a></small>
+                </p>
+            </section>
 
-			.columns {
-				display: flex;
-				justify-content: space-around;
-				align-items: center;
-				height: 100%; /* Растянуть колонки на весь слайд */
-			}
-			.column {
-				text-align: center;
-				flex: 1;
-			}
-			.qr-code {
-				width: 150px;
-				height: 150px;
-			}
-			.reveal .slides {
-				padding: 10px !important; /* Уменьшение отступа */
-			}
-		</style>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section data-background-gradient="linear-gradient(0deg, #FF7E5F, #feb47b)">
-					<h3>Htop for browser</h3>
-					<p>
-						<small>Разрабатывали <a href="https://github.com/agusev2311">Артём Гусев</a> и <a href="https://github.com/tyman123qwerty">Сошников Артемий</a></small><br>
-						<small>Научный руководитель <a href="https://github.com/VorontsovIE">Илья Воронцов</a></small>
-					</p>
-				</section>
+            <section data-background-gradient="linear-gradient(45deg, #2C3E50, #4CA1AF)">
+                <h2>Цель проекта</h2>
+                <p>
+                    Сделать мониторинг процессов и ресурсов сервера в браузере
+                </p>
+            </section>
 
-				<section data-background-gradient="linear-gradient(45deg, #2C3E50, #4CA1AF)">
-					<h2>Цель проекта</h2>
-					<p>
-						Сделать мониторинг процессов и ресурсов сервера в браузере
-					</p>
-				</section>
-				
-				<section>
-					<section data-background-gradient="linear-gradient(90deg, #B24592, #F15F79)">
-						<h2>Что мы сделали</h2> 
-						<ul>
-							<li>Отображение процессов</li>
-							<li>Возможность завершения процессов</li>
-							<li>Мониторинг ресурсов сервера</li>
-							<li>Аутентификацию</li>
-						</ul>
-					</section>
-					<section data-background-gradient="linear-gradient(135deg, #FDC830, #F37335)">
-						<h2>Что не успели сделать</h2> 
-						<ul>
-							<li>Командную строку</li>
-							<li>Улучшенный дизайн</li>
-						</ul>
-					</section>
-				</section>
+            <section>
+                <section data-background-gradient="linear-gradient(90deg, #B24592, #F15F79)">
+                    <h2>Что мы сделали</h2>
+                    <ul>
+                        <li>Отображение процессов</li>
+                        <li>Возможность завершения процессов</li>
+                        <li>Мониторинг ресурсов сервера</li>
+                        <li>Аутентификацию</li>
+                    </ul>
+                </section>
+                <section data-background-gradient="linear-gradient(135deg, #FDC830, #F37335)">
+                    <h2>Что не успели сделать</h2>
+                    <ul>
+                        <li>Командную строку</li>
+                        <li>Улучшенный дизайн</li>
+                    </ul>
+                </section>
+            </section>
 
-				<section>
-					<section data-background-gradient="linear-gradient(180deg, #00C9FF, #92FE9D)" data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
-						<h4>Пример работы программы</h4>
-						<h2>Процессор</h2>
-						<div class="cpu_info">
-							<div>
-								<div role="progressbar" class="cpu_info_bar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" style="--value:10.0">10.0%</div>
-							</div>
-							<div>
-								<div role="progressbar" class="cpu_info_bar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" style="--value:25.0">25.0%</div>
-							</div>
-							<div>
-								<div role="progressbar" class="cpu_info_bar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" style="--value:33.0">33.0%</div>
-							</div>
-							<div>
-								<div role="progressbar" class="cpu_info_bar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" style="--value:13.03">13.03%</div>
-							</div>
-						</div>
-					</section>
-					<section data-background-gradient="linear-gradient(225deg, #FF5F6D, #FFC371)" data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
-						<h2>RAM</h2>
-						<div id="progress-bar-container" class="mem_bar">
-							<div class="progress-bar-child" style="color: white; text-align: center; line-height: 75px; font-size: 35px; background: #e5405e; background: linear-gradient(to left, #e5405e 0%, #ffdb3a 45%, #3fffa2 100%);"></div>
-							<div class="progress-bar-child cache" style="width: 30.0%;"></div>
-							<div class="progress-bar-child shrinker" style="width: 5.0%;"></div>
-						</div>
-						<div class="mem_info">
-							total: 10000.0, free: 500.0, used: 6500.0, cache: 3000.0
-						</div>
-						<h4 style="font-size: 10px;">Пример работы программы</h4>
-					</section>
-					<section data-background-gradient="linear-gradient(270deg, #11998e, #38ef7d)" data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
-						<h2>Процессы</h2>
-						<table class="data" style="width: 20%;">
-							<thead>
-								<tr>
-									<th>PID</th>
-									<th>USER</th>
-									<th>PR</th>
-									<th>NI</th>
-									<th>VIRT</th>
-									<th>RES</th>
-									<th>SHR</th>
-									<th>S</th>
-									<th>CPU</th>
-									<th>MEM</th>
-									<th>TIME</th>
-									<th>COMMAND</th>
-									<th class="max">X</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>112</td>
-									<td>agusev2+</td>
-									<td>20</td>
-									<td>0</td>
-									<td>187756</td>
-									<td>34268</td>
-									<td>10748</td>
-									<td>S</td>
-									<td>33.3</td>
-									<td>0.4</td>
-									<td>0:00.80</td>
-									<td>python3</td>
-									<td class="max">❌</td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>root</td>
-									<td>20</td>
-									<td>0</td>
-									<td>2280</td>
-									<td>1524</td>
-									<td>1412</td>
-									<td>S</td>
-									<td>0.0</td>
-									<td>0.0</td>
-									<td>0:00.02</td>
-									<td>init(Ubun+</td>
-									<td class="max">❌</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td>root</td>
-									<td>20</td>
-									<td>0</td>
-									<td>2280</td>
-									<td>4</td>
-									<td>0</td>
-									<td>S</td>
-									<td>0.0</td>
-									<td>0.0</td>
-									<td>0:00.00</td>
-									<td>init</td>
-									<td class="max">❌</td>
-								</tr>
-							</tbody>
-						</table>
-						<script>
-							function updateTable() {
-								$.get("../../table_css", function(data) {
-									$('table.data').html(data);
-								});
-							}
-							$("div.upd").on("click", function() {
-								updateTable();
-								updMemStat();
-							});
-							setInterval(updateTable, 2000);
-						</script>
-						<h4 style="font-size: 10px;">Пример работы программы</h4>
-					</section>
-				</section>
+            <section>
+                <section data-background-gradient="linear-gradient(180deg, #00C9FF, #92FE9D)" data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+                    <h4>Пример работы программы</h4>
+                    <h2>Процессор</h2>
+                    <div class="cpu_info">
+                        <div>
+                            <div role="progressbar" class="cpu_info_bar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" style="--value:10.0; color: white;">10.0%</div>
+                        </div>
+                        <div>
+                            <div role="progressbar" class="cpu_info_bar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" style="--value:25.0; color: white;">25.0%</div>
+                        </div>
+                        <div>
+                            <div role="progressbar" class="cpu_info_bar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" style="--value:33.0; color: white;">33.0%</div>
+                        </div>
+                        <div>
+                            <div role="progressbar" class="cpu_info_bar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" style="--value:13.03; color: white;">13.03%</div>
+                        </div>
+                    </div>
+                </section>
+                <section data-background-gradient="linear-gradient(225deg, #FF5F6D, #FFC371)" data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+                    <h2>RAM</h2>
+                    <div id="progress-bar-container" class="mem_bar">
+                        <div class="progress-bar-child" style="color: white; text-align: center; line-height: 75px; font-size: 35px; background: #e5405e; background: linear-gradient(to left, #e5405e 0%, #ffdb3a 45%, #3fffa2 100%);"></div>
+                        <div class="progress-bar-child cache" style="width: 30.0%;"></div>
+                        <div class="progress-bar-child shrinker" style="width: 5.0%;"></div>
+                    </div>
+                    <div class="mem_info">
+                        total: 10000.0, free: 500.0, used: 6500.0, cache: 3000.0
+                    </div>
+                    <h4 style="font-size: 10px;">Пример работы программы</h4>
+                </section>
+                <section data-background-gradient="linear-gradient(270deg, #11998e, #38ef7d)" data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+                    <h2>Процессы</h2>
+                    <table class="data" style="margin:auto; width: 75%;">
+                        <thead>
+                            <tr>
+                                <th>PID</th>
+                                <th>USER</th>
+                                <th>PR</th>
+                                <th>NI</th>
+                                <th>VIRT</th>
+                                <th>RES</th>
+                                <th>SHR</th>
+                                <th>S</th>
+                                <th>CPU</th>
+                                <th>MEM</th>
+                                <th>TIME</th>
+                                <th>COMMAND</th>
+                                <th class="max">❌</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>112</td>
+                                <td>agusev2+</td>
+                                <td>20</td>
+                                <td>0</td>
+                                <td>187756</td>
+                                <td>34268</td>
+                                <td>10748</td>
+                                <td>S</td>
+                                <td>33.3</td>
+                                <td>0.4</td>
+                                <td>0:00.80</td>
+                                <td>python3</td>
+                                <td class="max">❌</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>root</td>
+                                <td>20</td>
+                                <td>0</td>
+                                <td>2280</td>
+                                <td>1524</td>
+                                <td>1412</td>
+                                <td>S</td>
+                                <td>0.0</td>
+                                <td>0.0</td>
+                                <td>0:00.02</td>
+                                <td>init(Ubun+</td>
+                                <td class="max">❌</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>root</td>
+                                <td>20</td>
+                                <td>0</td>
+                                <td>2280</td>
+                                <td>4</td>
+                                <td>0</td>
+                                <td>S</td>
+                                <td>0.0</td>
+                                <td>0.0</td>
+                                <td>0:00.00</td>
+                                <td>init</td>
+                                <td class="max">❌</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h4 style="font-size: 10px; margin-top: 10px;">Пример работы программы</h4>
+                </section>
+            </section>
 
-				<section data-background-gradient="linear-gradient(315deg, #5A3F37, #2C7744)">
-					<div class="columns">
-						<div class="column">
-							<p>Проект на github</p>
-							<img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://github.com/agusev2311/HtopBrowser" alt="GitHub">
-						</div>
-						<div class="column">
-							<p>Тест проекта</p>
-							<img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://87.242.101.64:8000/index/" alt="87.242.101.64:800/index/">
-							<p style="font-size: 20px;">Email: test@example.com</p>
-							<p style="font-size: 20px;">Password: Спросите у нас</p>
-						</div>
-						<div class="column">
-							<p>Ссылка на телеграмм Артёма</p>
-							<img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://t.me/agusev2311" alt="@agusev2311">
-						</div>
-					</div>
-				</section>
+            <section data-background-gradient="linear-gradient(315deg, #5A3F37, #2C7744)">
+                <div class="columns">
+                    <div class="column">
+                        <p>Проект на github</p>
+                        <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://github.com/agusev2311/HtopBrowser" alt="GitHub">
+                        <p style="font-size: 13px;margin-top:0px;">github.com/agusev2311/HtopBrowser</p>
+                    </div>
+                    <div class="column">
+                        <p>Тест проекта</p>
+                        <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://87.242.101.64:8000/index/" alt="87.242.101.64:800/index/">
+                        <p style="font-size: 13px;margin-top:0px;">87.242.101.64:8000/index/</p>
+                        <p style="font-size: 20px;">Email: test@example.com</p>
+                        <p style="font-size: 20px;">Password: Спросите у нас</p>
+                    </div>
+                    <div class="column">
+                        <p>Ссылка на телеграмм Артёма</p>
+                        <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://t.me/agusev2311" alt="@agusev2311">
+                        <p style="font-size: 13px; margin-top:0px;">@agusev2311</p>
+                    </div>
+                </div>
+            </section>
 
-				<section data-background-gradient="linear-gradient(360deg, #ff6b6b, #00d4ff)">
-					<h2>Спасибо за внимание</h2>
-                	<img src="https://i.ibb.co/zhxdrQL/happy.gif" alt="Котик" style="border-radius: 50%;">
-				</section>
-			</div>
-		</div>
+            <section data-background-gradient="linear-gradient(360deg, #ff6b6b, #00d4ff)">
+                <h2>Спасибо за внимание</h2>
+                <img src="https://i.ibb.co/zhxdrQL/happy.gif" alt="Котик" style="border-radius: 50%;">
+            </section>
 
-		<script src="dist/reveal.js"></script>
-		<script src="plugin/notes/notes.js"></script>
-		<script src="plugin/markdown/markdown.js"></script>
-		<script src="plugin/highlight/highlight.js"></script>
-		<script>
-			// More info about initialization & config:
-			// - https://revealjs.com/initialization/
-			// - https://revealjs.com/config/
-			Reveal.initialize({
-				hash: true,
 
-				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
-			});
-		</script>
-	</body>
+            <section>
+                <h2>Элементы htop</h2>
+            </section>
+            <section>
+                <section>
+                    <h2>1 - pr и nice</h2>
+                    <h4 style="font-size: 17px;">
+                        pr - значение, которое получает система, чтобы выполнить приоритет программы nice - значение, которое изменяет pr - pr = nice + 20. приоритет обьявляется так - чем меньше значение nice, тем задача приоритетнее. система использоует именно pr для обозначения
+                        приоритета.
+                    </h4>
+
+                </section>
+
+                <section>
+                    <h2>2 - виртуальная память</h2>
+                    <div style="font-size: 17px;">
+                        виртуальная память - это та память, которая отображается для программы, хотя на самом деле её нет. если программа исчерпывает весь свой реальный запас памяти, то оставшаяся память выделяется в другом месте, например, в жестком диске.
+                    </div>
+                </section>
+            </section>
+        </div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+        // More info about initialization & config:
+        // - https://revealjs.com/initialization/
+        // - https://revealjs.com/config/
+        Reveal.initialize({
+            hash: true,
+
+            // Learn about plugins: https://revealjs.com/plugins/
+            plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+        });
+    </script>
+</body>
+
 </html>
