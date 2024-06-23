@@ -1,5 +1,3 @@
-# Will anyone see this?
-
 # HtopBrowser
 
 HtopBrowser is a web application that provides a graphical interface to monitor system processes and resource usage, similar to the command-line tool `htop`. The application is built using Flask, and it allows users to view system statistics and manage processes through a web browser.
